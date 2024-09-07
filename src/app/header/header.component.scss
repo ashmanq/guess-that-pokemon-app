@@ -1,0 +1,19 @@
+@import 'variables';
+
+$border-size: 1px;
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'pokemon';
+    h1 {
+        font-size: 3rem;
+        color: $pokemon-yellow-colour;
+        // text-shadow: 5px 5px $pokemon-font-border-colour;
+        // text-shadow:  -$border-size $border-size 0 $pokemon-font-border-colour,
+        // $border-size $border-size 0 $pokemon-font-border-colour,
+        // $border-size -$border-size 0 $pokemon-font-border-colour,
+        // -$border-size -$border-size 0 $pokemon-font-border-colour;
+    }
+}

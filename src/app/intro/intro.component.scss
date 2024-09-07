@@ -1,0 +1,28 @@
+@import 'variables';
+
+section {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#start-button {
+    margin: 1rem;
+    max-width: 500px;
+    font-size: 1.5rem;
+    font-family: 'pokemon';
+    color: $pokemon-blue-colour;
+    padding: 2rem;
+    border-radius: 5px;
+    border-style: solid;
+    background-color: $pokemon-yellow-colour;
+    &:hover {
+        filter: brightness(70%);
+    }
+}
