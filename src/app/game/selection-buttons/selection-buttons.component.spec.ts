@@ -1,28 +1,29 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GameComponent } from './game.component';
+import { SelectionButtonsComponent } from './selection-buttons.component';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { GameService } from './game.service';
 import { provideHttpClient } from '@angular/common/http';
+import { GameService } from '../game.service';
 
-describe('GameComponent', () => {
-  let component: GameComponent;
-  let fixture: ComponentFixture<GameComponent>;
+describe('SelectionButtonsComponent', () => {
+  let component: SelectionButtonsComponent;
+  let fixture: ComponentFixture<SelectionButtonsComponent>;
 
   let gameService: GameService;
   let httpTesting: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GameComponent],
+      imports: [SelectionButtonsComponent],
       providers: [provideHttpClientTesting(), provideHttpClient()]
     })
-      .compileComponents();
+    .compileComponents();
+
 
     httpTesting = TestBed.inject(HttpTestingController);
     gameService = TestBed.inject(GameService);
 
-    fixture = TestBed.createComponent(GameComponent);
+    fixture = TestBed.createComponent(SelectionButtonsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

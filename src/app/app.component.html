@@ -1,7 +1,7 @@
 <app-header />
 <main>
   @if(gameStarted) {
-    <app-game />
+    <app-game (restartGame)="resetGame()" />
   } @else {
     <app-intro (start)="startGame()"/>
   }

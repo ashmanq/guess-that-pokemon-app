@@ -22,4 +22,5 @@ export type GameRound = {
     pokemonUrl: string;
     pokemonName: string;
     pokemonOptions: string[];
+    result?: "success" | "fail";
 }

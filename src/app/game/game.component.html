@@ -1,1 +1,17 @@
-<p>game works!</p>
+@if(isLoading) {
+    <h2>Loading</h2>
+} @else {
+    <app-game-score />
+    <app-pokemon-image [isHidden]="isPokemonHidden" />
+    <div class="button-section">
+        @if(isFinished) {
+            <button (click)="resetGame()">Finish</button>
+        } @else {
+            @if(!roundResult){
+                <app-selection-buttons (optionSelected)="handleOptionSelected($event)" />
+            }@else {
+                <button class="next-round-button" (click)="startNewRound()">Next Round</button>
+            }
+        }
+    </div>
+}

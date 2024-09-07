@@ -1,0 +1,13 @@
+@import 'variables';
+
+.button-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1rem;
+    text-align: center;
+
+    @media (min-width: $layout-breakpoint-xtra-small) {
+        margin-top: 2rem;
+    }
+}

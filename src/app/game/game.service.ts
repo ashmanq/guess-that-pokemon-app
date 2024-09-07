@@ -6,7 +6,7 @@ import { lastValueFrom } from "rxjs";
 const POKEMON_API_URL = `https://pokeapi.co/api/v2/pokemon`;
 const NO_OF_ROUNDS = 5;
 const NO_OF_OPTIONS = 4;
-const SCORE_PER_ROUND = 10;
+const SCORE_PER_ROUND = 1;
 
 
 @Injectable({ providedIn: 'root' })
@@ -14,11 +14,11 @@ export class GameService {
     private noOfRounds = NO_OF_ROUNDS;
     private noOfOptions = NO_OF_OPTIONS;
     private scorePerRound = SCORE_PER_ROUND;
-    
+
     private results: boolean[] = [];
     private pokemonList: PokemonListItem[] = [];
     private gameRounds: GameRound[] = [];
-    
+
     private score: number = 0;
     private currentRound = 0;
 
@@ -60,7 +60,7 @@ export class GameService {
         return result?.sprites?.other?.["official-artwork"]?.front_default;
     }
 
-    static shuffleArray(array: any[]): any[]{
+    static shuffleArray(array: any[]): any[] {
         for (let i = array.length - 1; i >= 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
@@ -99,12 +99,25 @@ export class GameService {
     }
 
     getCurrentRound() {
-        return this.currentRound;
+        return this.currentRound + 1;
     }
 
 
     getCurrentGameRound() {
         return this.gameRounds[this.currentRound];
+    }
+
+    getCurrentRoundImageUrl() {
+        return this.gameRounds[this.currentRound].pokemonImageUrl;
+    }
+
+
+    getCurrentRoundPokemonName() {
+        return this.gameRounds[this.currentRound].pokemonName;
+    }
+
+    getCurrentRoundButtonOptions() {
+        return this.gameRounds[this.currentRound].pokemonOptions;
     }
 
     getMaxRounds() {
@@ -115,20 +128,33 @@ export class GameService {
         return this.noOfRounds * this.scorePerRound;
     }
 
-    getRandomPokemon() {
-        const randomIndex = Math.floor(Math.random() * this.pokemonList.length)
-        return this.pokemonList[randomIndex];
+    getCurrentRoundResult() {
+        return this.gameRounds[this.currentRound]?.result;
     }
 
-    setPokemonList(list: PokemonListItem[]) {
-        this.pokemonList = [...list];
+    isFinalRound() {
+        return (this.currentRound + 1) >= this.noOfRounds;
     }
 
-    addResultToScore(result: boolean) {
+    checkResult(selection: string) {
         if (this.currentRound >= 0 && this.currentRound < this.noOfRounds) {
-            if (result === true) this.score = this.score + this.scorePerRound;
-            this.results[this.currentRound] = result
-            this.currentRound = this.currentRound + 1;
+            const currentGameRound = this.gameRounds[this.currentRound];
+            if (selection === currentGameRound?.pokemonName) {
+                currentGameRound.result = 'success';
+                this.score = this.score + this.scorePerRound;
+            } else {
+                currentGameRound.result = 'fail';
+            }
         }
+    }
+
+    incrementRound() {
+        this.currentRound = this.currentRound + 1;
+    }
+
+    restart() {
+        this.score = 0;
+        this.currentRound = 0;
+        this.gameRounds = [];
     }
 }

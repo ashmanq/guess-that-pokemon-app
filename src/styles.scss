@@ -8,12 +8,56 @@
     font-style: normal;
 }
 
+$border-size: 3px;
+
 body {
     background-color: $main-background-colour;
     font-family: "Poppins", sans-serif;
     color: white;
 }
 
+h1 {
+    text-align: center;
+    font-size: 3rem;
+    color: $pokemon-yellow-colour;
+    // text-shadow: 5px 5px $pokemon-blue-colour;
+    text-shadow:  -$border-size $border-size 0 $pokemon-blue-colour,
+    $border-size $border-size 0 $pokemon-blue-colour,
+    $border-size -$border-size 0 $pokemon-blue-colour,
+    -$border-size -$border-size 0 $pokemon-blue-colour;
+}
+
+h2 {
+    text-align: center;
+    color: $pokemon-yellow-colour;
+    // text-shadow: 5px 5px $pokemon-blue-colour;
+    text-shadow:  -$border-size $border-size 0 $pokemon-blue-colour,
+    $border-size $border-size 0 $pokemon-blue-colour,
+    $border-size -$border-size 0 $pokemon-blue-colour,
+    -$border-size -$border-size 0 $pokemon-blue-colour;
+}
+
 button {
     cursor: pointer;
+    font-family: 'pokemon';
+    color: $pokemon-blue-colour;
+    border-radius: 5px;
+    border-style: solid;
+    background-color: $pokemon-yellow-colour;
+
+    padding: 0.5rem;
+    margin: 0.5rem;
+    font-size: 1.2rem;
+    width: 100%;
+
+    &:hover {
+        filter: brightness(70%);
+    }
+
+    @media (min-width: $layout-breakpoint-xtra-small) {
+        font-size: 2rem;
+        padding: 1rem;
+        margin: 1rem;
+        width: auto;
+    }
 }

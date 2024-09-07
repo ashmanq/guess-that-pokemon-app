@@ -1,28 +1,29 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GameComponent } from './game.component';
+import { GameScoreComponent } from './game-score.component';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { GameService } from './game.service';
+import { GameService } from '../game.service';
 import { provideHttpClient } from '@angular/common/http';
 
-describe('GameComponent', () => {
-  let component: GameComponent;
-  let fixture: ComponentFixture<GameComponent>;
+describe('GameScoreComponent', () => {
+  let component: GameScoreComponent;
+  let fixture: ComponentFixture<GameScoreComponent>;
 
   let gameService: GameService;
   let httpTesting: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GameComponent],
+      imports: [GameScoreComponent],
       providers: [provideHttpClientTesting(), provideHttpClient()]
     })
-      .compileComponents();
+    .compileComponents();
+
 
     httpTesting = TestBed.inject(HttpTestingController);
     gameService = TestBed.inject(GameService);
 
-    fixture = TestBed.createComponent(GameComponent);
+    fixture = TestBed.createComponent(GameScoreComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

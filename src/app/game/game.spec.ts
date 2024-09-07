@@ -74,9 +74,15 @@ describe('Game Service', () => {
         await gameService.fetchGameRounds();
         const round = gameService.getCurrentGameRound();
         expect(round.pokemonName).toBeDefined();
+        expect(round.pokemonUrl).toBeDefined();
         expect(round.pokemonImageUrl).toBeDefined();
         expect(round.pokemonOptions).toBeDefined();
     })
 
+    it('Should be able to get the current rounds pokemon image url', async () => {
+        await gameService.fetchGameRounds();
+        const imageUrl = gameService.getCurrentRoundImageUrl();
+        expect(imageUrl).toBeDefined();
+    })
 
 })

@@ -16,13 +16,5 @@ section {
     margin: 1rem;
     max-width: 500px;
     font-size: 1.5rem;
-    font-family: 'pokemon';
-    color: $pokemon-blue-colour;
     padding: 2rem;
-    border-radius: 5px;
-    border-style: solid;
-    background-color: $pokemon-yellow-colour;
-    &:hover {
-        filter: brightness(70%);
-    }
 }

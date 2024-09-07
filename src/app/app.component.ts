@@ -13,18 +13,17 @@ import { GameService } from './game/game.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  pokemonListLoading: boolean = true;
   gameStarted: boolean = true;
-  private gameService = inject(GameService);
 
   ngOnInit() {
-    // this.gameService.getPokemonList().then(res => {
-    //   this.pokemonListLoading = false;
-    // })
   }
 
   startGame() {
-    console.log("Clicked")
     this.gameStarted = true;
+  }
+
+  resetGame() {
+    console.log("Restarting!")
+    this.gameStarted = false;
   }
 }
