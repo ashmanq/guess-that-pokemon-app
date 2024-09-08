@@ -20,13 +20,13 @@ This will run a local version of the app on `https://localhost:4200` by default.
 When first run the game will show you a start screen. Click the `Start` button to begin a new game.
 
 <p align="center">
-    <image width="600px" height="400px" src="/images/startScreen.png">
+    <image width="600px" height="600px" src="/images/startScreen.png">
 </p>
 
 You will then be shown the main game screen which will show you 4 options to select to guess the hidden pokemon on screen. Clicking on one of the options will display the Pokemon and give you a result on whether your guess was correct or not.
 
 <p align="center">
-    <image width="600px" height="400px" src="/images/gameScreen.png">
+    <image width="600px" height="600px" src="/images/gameScreen.png">
 </p>
 
 The game screen has the following:
