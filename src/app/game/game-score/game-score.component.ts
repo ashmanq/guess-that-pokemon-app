@@ -9,11 +9,12 @@ import { GameService } from '../game.service';
   styleUrl: './game-score.component.scss'
 })
 export class GameScoreComponent {
+  allResults = input<string[]>([]);
   gameService = inject(GameService);
 
-  get score() {
-    return this.gameService.getScore();
-  }
+  // get score() {
+  //   return this.gameService.getScore();
+  // }
 
   get maxScore() {
     return this.gameService.getMaxScore();
@@ -27,7 +28,7 @@ export class GameScoreComponent {
     return this.gameService.getMaxRounds();
   }
 
-  get allResults() {
-    return this.gameService.getAllResults();
-  }
+  // get allResults() {
+  //   return this.gameService.getAllResults();
+  // }
 }

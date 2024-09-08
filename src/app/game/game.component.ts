@@ -17,20 +17,21 @@ export class GameComponent implements OnInit{
   isLoading: boolean = true;
   isPokemonHidden = true;
   isFinished = false;
-  resultSignal: string | undefined = "";
+  allResults: string[]= [];
   private gameService = inject(GameService);
+  resultSignal = this.gameService.getResultsSignal();
+
+  constructor() {
+    effect(() => {
+      console.log("Change!")
+     })
+  }
 
   ngOnInit() {
     this.gameService.fetchGameRounds().then(res => {
       this.isLoading = false;
     })
-
-    this.resultSignal = this.gameService.receivedResult();
-
-    effect(() => {
-      this.resultSignal = this.gameService.receivedResult();
-      console.log("Change!: ", this.resultSignal)
-    })
+    this.allResults = [...this.gameService.getAllResults()];
   }
 
   get roundResult() {
@@ -42,7 +43,14 @@ export class GameComponent implements OnInit{
     this.gameService.checkResult(selection);
   }
 
+  toggleShowNextRound(result: boolean) {
+    if(result === true) this.showNextRoundButton = true;
+    else this.showNextRoundButton = false;
+    this.allResults = [...this.gameService.getAllResults()];
+  }
+
   async startNewRound() {
+    this.showNextRoundButton = false;
     if(this.gameService.isFinalRound()){
       this.isFinished = true;
     } else {
@@ -57,8 +65,36 @@ export class GameComponent implements OnInit{
     }
   }
 
-  getNextRoundNumber() {
+  get getNextRoundNumber() {
     return this.gameService.getCurrentRound() + 1;
+  }
+
+  get isFinalRound() {
+    return this.gameService.isFinalRound();
+  }
+
+  get nextLevelText() {
+    if(this.gameService.isFinalRound()) {
+      return "Click to view final score!";
+    }
+    let resultText = "";
+    if(this.gameService.getCurrentRoundResult() == "success") {
+      resultText += "Congratulations! ";
+    } else if (this.gameService.getCurrentRoundResult() == "fail")  {
+      resultText += "Better luck next time. "
+    }
+    return resultText += "Click to go to the next round!";
+  }
+
+  get nextRoundButtonText() {
+    if(this.gameService.isFinalRound()) {
+      return "View Score";
+    }
+    return `Round ${this.gameService.getCurrentRound() + 1}`;
+  }
+
+  get finalScoreText() {
+    return `Final Score: ${this.gameService.getScore()}/${this.gameService.getMaxScore()}`
   }
 
   resetGame() {

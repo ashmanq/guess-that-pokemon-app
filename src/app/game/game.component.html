@@ -5,24 +5,28 @@
         <p class="poke-text loading-text">Loading</p>
     </div>
     } @else {
-    <app-game-score />
+    <app-game-score [allResults]="allResults" />
     @if(!isFinished){
-    <app-pokemon-image />
+    <div class="exit-button-section">
+        <button class="exit-button" title="Click to exit game" (click)="resetGame()">Exit</button>
+    </div>
+    <app-pokemon-image (resultShown)="toggleShowNextRound($event)" />
     <div class="button-section">
         @if(!roundResult){
         <app-selection-buttons (optionSelected)="handleOptionSelected($event)" />
         }
         @if(showNextRoundButton) {
-            <div>
-                <p>Click to go to the next round!</p>
-                <button class="next-round-button" (click)="startNewRound()">{{"Round " + getNextRoundNumber()}}</button>
-            </div>
+        <div>
+            <p>{{ nextLevelText }}</p>
+            <button class="next-round-button" (click)="startNewRound()">{{nextRoundButtonText}}</button>
+        </div>
         }
     </div>
-    <div class="exit-button-section">
-        <button class="exit-button" title="Click to exit game" (click)="resetGame()">Exit</button>
-    </div>
+
     } @else {
+        <div>
+            <h2>{{ finalScoreText }}</h2>
+        </div>
     <div class="button-section">
         <button (click)="resetGame()">Finish</button>
     </div>

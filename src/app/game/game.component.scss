@@ -5,8 +5,11 @@ section {
 }
 
 .exit-button-section {
+    max-width: $max-width;
+    margin: auto;
     display: flex;
     justify-content: end;
+    margin-top: 1rem;
 }
 
 .exit-button {
@@ -42,7 +45,7 @@ section {
   filter: brightness(0.7);
   width: 150px;
   animation-name: rock;
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-iteration-count: infinite;
 }
 

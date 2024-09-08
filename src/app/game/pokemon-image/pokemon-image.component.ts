@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output } from '@angular/core';
 import { GameService } from '../game.service';
 import { NgOptimizedImage } from '@angular/common';
 import { Subscription, timeInterval } from 'rxjs';
@@ -12,12 +12,10 @@ import { Subscription, timeInterval } from 'rxjs';
 })
 export class PokemonImageComponent implements OnInit, OnDestroy {
   private gameService = inject(GameService);
-  pName = "";
   private pokemonNameSubscription: Subscription | undefined;
+  resultShown = output<boolean>();
+  pName = "";
   animationDurationSecs = 2;
-
-  constructor() {
-  }
 
   ngOnInit(): void {
     this.pokemonNameSubscription = this.gameService.currentRoundPokemonNameObservable.subscribe((result) => {
@@ -25,9 +23,11 @@ export class PokemonImageComponent implements OnInit, OnDestroy {
       if (result) {
         setTimeout(() => {
           this.pName = this.gameService.getCurrentRoundPokemonName();
+          this.resultShown.emit(true);
         }, this.animationDurationSecs * 1000)
       } else {
         this.pName = ""
+        this.resultShown.emit(false);
       }
     })
   }

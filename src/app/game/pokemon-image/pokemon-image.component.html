@@ -1,21 +1,24 @@
 <section>
-    <div class="pokemon-image-section" >
-        <img class="pokemon-image" [class.hide]="!result" [class.show]="result" [style.--animation-duration]="animationDuration" [src]="pokemonImage" [alt]="imageLabel"/>
-    </div>
-    <div class="pokemon-name-section">
-        @if(pName) {
+    <div class="image-area-container">
+        <div class="pokemon-image-section">
+            <img class="pokemon-image" [class.hide]="!result" [class.show]="result"
+                [style.--animation-duration]="animationDuration" [src]="pokemonImage" [alt]="imageLabel" />
+        </div>
+        <div class="pokemon-name-section">
+            @if(pName) {
             <h2 class="pokemon-name">{{ pName }}</h2>
             <div class="result-svg-section">
                 @if(result === "success") {
-                    <img class="result-svg" src="/images/tick.svg" />
+                <img class="result-svg" src="/images/tick.svg" />
                 } @else if (result === "fail") {
-                    <img class="result-svg" src="/images/cross.svg" />
+                <img class="result-svg" src="/images/cross.svg" />
                 }
             </div>
-        } @else {
+            } @else {
             <div>
                 <p class="pokemon-question-mark poke-text">?</p>
             </div>
-        } 
+            }
+        </div>
     </div>
 </section>

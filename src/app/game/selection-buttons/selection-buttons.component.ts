@@ -18,7 +18,6 @@ export class SelectionButtonsComponent {
   }
 
   onSelectionClicked(option: string) {
-    // console.log("Option: ", option);
     this.optionSelected.emit(option);
   }
 

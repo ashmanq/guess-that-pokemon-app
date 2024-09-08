@@ -4,7 +4,7 @@
         <!-- <h2>Score: <span class="game-score">{{ score + " / " + maxScore }}</span></h2> -->
         <h2>Score: </h2>
         <div class="score-balls">
-            @for (result of allResults; track $index) {
+            @for (result of (allResults()); track $index) {
                 @switch (result) {
                     @case ("") {
                     <img class="score-pokeball none" src="/images/pokeball.svg" />

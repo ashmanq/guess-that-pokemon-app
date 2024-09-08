@@ -11,7 +11,7 @@ const SCORE_PER_ROUND = 1;
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
-    receivedResult = signal<string | undefined>(undefined);
+    private receivedResultSignal = signal<string | undefined>(undefined);
     private noOfRounds = NO_OF_ROUNDS;
     private noOfOptions = NO_OF_OPTIONS;
     private scorePerRound = SCORE_PER_ROUND;
@@ -147,6 +147,10 @@ export class GameService {
         return allResults;
     }
 
+    getResultsSignal() {
+        return this.receivedResultSignal;
+    }
+
     isFinalRound() {
         return (this.currentRound + 1) >= this.noOfRounds;
     }
@@ -165,7 +169,7 @@ export class GameService {
             // If the result is toggled then we signal a change for the pokemon name
             if (prevGameRoundResult !== currentGameRound?.result){
                 this.currentRoundPokemonNameSubject.next(currentGameRound.result)
-                this.receivedResult.set(currentGameRound?.result)
+                this.receivedResultSignal.set(currentGameRound?.result)
             }
         }
     }
@@ -173,7 +177,7 @@ export class GameService {
     incrementRound() {
         this.currentRound = this.currentRound + 1;
         this.currentRoundPokemonNameSubject.next(this.gameRounds[this.currentRound].result);
-        this.receivedResult.set(this.gameRounds[this.currentRound].result);
+        this.receivedResultSignal.set(this.gameRounds[this.currentRound].result);
     }
 
     restart() {
