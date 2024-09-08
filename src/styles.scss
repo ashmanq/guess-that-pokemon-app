@@ -27,8 +27,8 @@ h1 {
     color: $pokemon-yellow-colour;
     text-shadow:  -$border-size $border-size 0 $pokemon-blue-colour,
     $border-size $border-size 0 $pokemon-blue-colour,
-    $border-size -$border-size 0 $pokemon-blue-colour,
-    -$border-size -$border-size 0 $pokemon-blue-colour;
+    $border-size (-$border-size) 0 $pokemon-blue-colour,
+    -$border-size (-$border-size) 0 $pokemon-blue-colour;
 }
 
 h2, .poke-text {
@@ -36,13 +36,12 @@ h2, .poke-text {
     color: $pokemon-yellow-colour;
     text-shadow:  -$border-size $border-size 0 $pokemon-blue-colour,
     $border-size $border-size 0 $pokemon-blue-colour,
-    $border-size -$border-size 0 $pokemon-blue-colour,
-    -$border-size -$border-size 0 $pokemon-blue-colour;
+    $border-size (-$border-size) 0 $pokemon-blue-colour,
+    -$border-size (-$border-size) 0 $pokemon-blue-colour;
 }
 
 button {
     cursor: pointer;
-    // font-family: 'pokemon';
     font-weight: bold;
     text-transform: capitalize;
     color: $pokemon-blue-colour;

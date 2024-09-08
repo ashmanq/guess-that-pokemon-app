@@ -19,7 +19,6 @@ export class PokemonImageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.pokemonNameSubscription = this.gameService.currentRoundPokemonNameObservable.subscribe((result) => {
-      console.log("Name Change: ", result)
       if (result) {
         setTimeout(() => {
           this.pName = this.gameService.getCurrentRoundPokemonName();

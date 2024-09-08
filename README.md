@@ -1,6 +1,37 @@
-# GuessThatPokemonApp
+# Who's That Pokemon? Game
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.3.
+This app is a simple Pokemon guessing game created using Angular v18.
+
+## Installation 
+To install dependencies for this app run the following code:
+
+`npm install`
+
+## Run The App
+
+To run the app cd into the app directory in therminal and run the following command:
+
+`npm run start`
+
+This will run a local version of the app on `https://localhost:4200` by default.
+
+## Game Instructions
+
+When first run the game will show you a start screen. Click the `Start` button to begin a new game.
+
+<p align="center">
+    <image width="600px" height="400px" src="/images/startScreen.png">
+</p>
+
+You will then be shown the main game screen which will show you 4 options to select to guess the hidden pokemon on screen. Clicking on one of the options will display the Pokemon and give you a result on whether your guess was correct or not.
+
+<p align="center">
+    <image width="600px" height="400px" src="/images/gameScreen.png">
+</p>
+
+The game screen has the following:
+- Exit Button - to exit the game
+- Selection Buttons - A selection of Pokemon to choose from to guess the hidden pokemon
 
 ## Development server
 
@@ -21,7 +52,3 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, lastValueFrom } from "rxjs";
 
 const POKEMON_API_URL = `https://pokeapi.co/api/v2/pokemon`;
-const NO_OF_ROUNDS = 1;
+const NO_OF_ROUNDS = 5;
 const NO_OF_OPTIONS = 4;
 const SCORE_PER_ROUND = 1;
 
@@ -72,6 +72,13 @@ export class GameService {
     }
 
     async fetchGameRounds(): Promise<any> {
+        const loadedRounds = this.initialiseFromLocalStorage();
+
+        if(loadedRounds?.length) {
+            this.gameRounds = [...loadedRounds];
+            return;
+        };
+
         // Clear current game rounds
         this.gameRounds = [];
 
@@ -92,8 +99,7 @@ export class GameService {
             };
             this.gameRounds.push(round);
         }
-
-        console.log("Rounds: ", this.gameRounds);
+        this.saveResultsToLocalStorage();
     }
 
 
@@ -138,7 +144,7 @@ export class GameService {
         const allResults: string[] = [];
         for (let index = 0; index < this.noOfRounds; index++) {
             const result = this.gameRounds[index]?.result
-            if(!result) {
+            if (!result) {
                 allResults.push("")
             } else {
                 allResults.push(result);
@@ -167,10 +173,11 @@ export class GameService {
                 currentGameRound.result = 'fail';
             }
             // If the result is toggled then we signal a change for the pokemon name
-            if (prevGameRoundResult !== currentGameRound?.result){
+            if (prevGameRoundResult !== currentGameRound?.result) {
                 this.currentRoundPokemonNameSubject.next(currentGameRound.result)
                 this.receivedResultSignal.set(currentGameRound?.result)
             }
+            this.saveResultsToLocalStorage();
         }
     }
 
@@ -178,6 +185,7 @@ export class GameService {
         this.currentRound = this.currentRound + 1;
         this.currentRoundPokemonNameSubject.next(this.gameRounds[this.currentRound].result);
         this.receivedResultSignal.set(this.gameRounds[this.currentRound].result);
+        this.saveResultsToLocalStorage();
     }
 
     restart() {
@@ -185,5 +193,33 @@ export class GameService {
         this.currentRound = 0;
         this.gameRounds = [];
         this.currentRoundPokemonNameSubject.next(undefined);
+        this.saveResultsToLocalStorage();
+    }
+
+    private saveResultsToLocalStorage() {
+        localStorage.setItem('pokemonRounds', JSON.stringify(this.gameRounds));
+    }
+
+    private initialiseFromLocalStorage(): GameRound[] | undefined {
+        const storedResults = localStorage.getItem('pokemonRounds');
+        if (storedResults) {
+            const loadedGameRounds: GameRound[] = JSON.parse(storedResults) as GameRound[];
+            let newScore = 0;
+            let newCurentRound = undefined;
+            for (let index = 0; index < loadedGameRounds.length; index++) {
+                const result = loadedGameRounds[index]?.result;
+                if (result !== undefined) {
+                    newCurentRound = index;
+                    if(result === "success") newScore = newScore + (this.scorePerRound);
+                }
+            }
+            // Ensure we haven't completed the game and the number of rounds matches the current setting
+            if(newCurentRound !== undefined && (newCurentRound + 1) < this.noOfRounds && loadedGameRounds.length === this.noOfRounds){
+                this.score = newScore;
+                this.currentRound = newCurentRound + 1;
+                return loadedGameRounds;
+            }
+        }
+        return undefined;
     }
 }

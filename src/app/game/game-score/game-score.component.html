@@ -2,7 +2,7 @@
     <h1>{{"Round: " + currentRound + " / " + maxRounds}}</h1>
     <div class="score-section">
         <!-- <h2>Score: <span class="game-score">{{ score + " / " + maxScore }}</span></h2> -->
-        <h2>Score: </h2>
+        <h2>Results: </h2>
         <div class="score-balls">
             @for (result of (allResults()); track $index) {
                 @switch (result) {

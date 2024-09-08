@@ -19,13 +19,6 @@ export class GameComponent implements OnInit{
   isFinished = false;
   allResults: string[]= [];
   private gameService = inject(GameService);
-  resultSignal = this.gameService.getResultsSignal();
-
-  constructor() {
-    effect(() => {
-      console.log("Change!")
-     })
-  }
 
   ngOnInit() {
     this.gameService.fetchGameRounds().then(res => {
@@ -94,7 +87,7 @@ export class GameComponent implements OnInit{
   }
 
   get finalScoreText() {
-    return `Final Score: ${(this.gameService.getScore()/this.gameService.getMaxScore() * 100)}`
+    return `Final Score: ${(this.gameService.getScore()/this.gameService.getMaxScore() * 100)}%`
   }
 
   get finalScoreSubText() {
