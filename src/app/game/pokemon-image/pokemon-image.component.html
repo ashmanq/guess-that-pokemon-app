@@ -1,8 +1,21 @@
 <section>
     <div class="pokemon-image-section" >
-        <img class="pokemon-image" [class.hide]="isHidden()" [src]="pokemonImage" [alt]="imageLabel"/>
+        <img class="pokemon-image" [class.hide]="!result" [src]="pokemonImage" [alt]="imageLabel"/>
     </div>
     <div class="pokemon-name-section">
-        <h2>{{ pokemonName }}</h2>
+        @if(pokemonName) {
+            <h2 class="pokemon-name">{{ pokemonName }}</h2>
+            <div class="result-svg-section">
+                @if(result === "success") {
+                    <img class="result-svg" src="/images/tick.svg" />
+                } @else if (result === "fail") {
+                    <img class="result-svg" src="/images/cross.svg" />
+                }
+            </div>
+        } @else {
+            <div>
+                <p class="pokemon-question-mark poke-text">?</p>
+            </div>
+        } 
     </div>
 </section>

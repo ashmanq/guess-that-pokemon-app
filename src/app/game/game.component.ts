@@ -35,12 +35,18 @@ export class GameComponent implements OnInit{
     this.gameService.checkResult(selection);
   }
 
-  startNewRound() {
+  async startNewRound() {
     console.log("Round!", this.gameService.isFinalRound())
     if(this.gameService.isFinalRound()){
       this.isFinished = true;
     } else {
+      this.isLoading = true;
       this.gameService.incrementRound();
+      // We introduce a time delay to prevent the pokemon image still showing the previous pokemon
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000)
+
     }
   }
 

@@ -10,27 +10,36 @@
 
 $border-size: 3px;
 
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
-    background-color: $main-background-colour;
+    background: linear-gradient($main-background-colour, $secondary-background-colour);
     font-family: "Poppins", sans-serif;
     color: white;
+}
+
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 h1 {
     text-align: center;
     font-size: 3rem;
     color: $pokemon-yellow-colour;
-    // text-shadow: 5px 5px $pokemon-blue-colour;
     text-shadow:  -$border-size $border-size 0 $pokemon-blue-colour,
     $border-size $border-size 0 $pokemon-blue-colour,
     $border-size -$border-size 0 $pokemon-blue-colour,
     -$border-size -$border-size 0 $pokemon-blue-colour;
 }
 
-h2 {
+h2, .poke-text {
     text-align: center;
     color: $pokemon-yellow-colour;
-    // text-shadow: 5px 5px $pokemon-blue-colour;
     text-shadow:  -$border-size $border-size 0 $pokemon-blue-colour,
     $border-size $border-size 0 $pokemon-blue-colour,
     $border-size -$border-size 0 $pokemon-blue-colour,

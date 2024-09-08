@@ -1,17 +1,23 @@
-@if(isLoading) {
-    <h2>Loading</h2>
-} @else {
+<section>
+    @if(isLoading) {
+    <div class="loading-section">
+        <h2>Loading</h2>
+    </div>
+    } @else {
     <app-game-score />
-    <app-pokemon-image [isHidden]="isPokemonHidden" />
+    @if(!isFinished){
+    <app-pokemon-image />
     <div class="button-section">
-        @if(isFinished) {
-            <button (click)="resetGame()">Finish</button>
-        } @else {
-            @if(!roundResult){
-                <app-selection-buttons (optionSelected)="handleOptionSelected($event)" />
-            }@else {
-                <button class="next-round-button" (click)="startNewRound()">Next Round</button>
-            }
+        @if(!roundResult){
+        <app-selection-buttons (optionSelected)="handleOptionSelected($event)" />
+        }@else {
+        <button class="next-round-button" (click)="startNewRound()">Next Round</button>
         }
     </div>
-}
+    } @else {
+    <div class="button-section">
+        <button (click)="resetGame()">Finish</button>
+    </div>
+    }
+    }
+</section>

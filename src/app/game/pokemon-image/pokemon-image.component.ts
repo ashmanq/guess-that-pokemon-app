@@ -11,18 +11,21 @@ import { NgOptimizedImage } from '@angular/common';
 })
 export class PokemonImageComponent {
   private gameService = inject(GameService);
-  isHidden = input<boolean>(true)
 
   get pokemonImage() {
     return this.gameService.getCurrentRoundImageUrl();
   }
 
   get imageLabel() {
-    return this.isHidden() ? "" : this.gameService.getCurrentRoundPokemonName();
+    return this.gameService.getCurrentRoundResult() ? this.gameService.getCurrentRoundPokemonName() : "";
   }
 
   get pokemonName() {
-    return this.isHidden() ? "?" : this.gameService.getCurrentRoundPokemonName();
+    return this.gameService.getCurrentRoundResult() ? this.gameService.getCurrentRoundPokemonName() : "";
+  }
+
+  get result() {
+    return this.gameService.getCurrentRoundResult();
   }
 
 }
