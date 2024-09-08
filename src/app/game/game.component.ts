@@ -94,7 +94,13 @@ export class GameComponent implements OnInit{
   }
 
   get finalScoreText() {
-    return `Final Score: ${this.gameService.getScore()}/${this.gameService.getMaxScore()}`
+    return `Final Score: ${(this.gameService.getScore()/this.gameService.getMaxScore() * 100)}`
+  }
+
+  get finalScoreSubText() {
+    const score = this.gameService.getScore()/this.gameService.getMaxScore() * 100;
+    if (score === 100) return "Well done, you guessed every Pokemon correctly!";
+    return ""
   }
 
   resetGame() {

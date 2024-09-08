@@ -5,8 +5,8 @@ section {
 }
 
 .exit-button-section {
-    max-width: $max-width;
-    margin: auto;
+    // max-width: $max-width;
+    // margin: auto;
     display: flex;
     justify-content: end;
     margin-top: 1rem;
@@ -29,6 +29,12 @@ section {
   @media (min-width: $layout-breakpoint-xtra-small) {
     margin-top: 2rem;
   }
+}
+
+.game-completion-text {
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
 }
 
 .loading-section {
