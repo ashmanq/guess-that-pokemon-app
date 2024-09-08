@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, output } from '@angular/core';
+import { Component, effect, inject, OnInit, output } from '@angular/core';
 import { GameService } from './game.service';
 import { GameScoreComponent } from "./game-score/game-score.component";
 import { PokemonImageComponent } from "./pokemon-image/pokemon-image.component";
@@ -13,14 +13,23 @@ import { SelectionButtonsComponent } from "./selection-buttons/selection-buttons
 })
 export class GameComponent implements OnInit{
   restartGame = output<void>();
+  showNextRoundButton = false;
   isLoading: boolean = true;
   isPokemonHidden = true;
   isFinished = false;
+  resultSignal: string | undefined = "";
   private gameService = inject(GameService);
 
   ngOnInit() {
     this.gameService.fetchGameRounds().then(res => {
       this.isLoading = false;
+    })
+
+    this.resultSignal = this.gameService.receivedResult();
+
+    effect(() => {
+      this.resultSignal = this.gameService.receivedResult();
+      console.log("Change!: ", this.resultSignal)
     })
   }
 
@@ -42,6 +51,7 @@ export class GameComponent implements OnInit{
       // We introduce a time delay to prevent the pokemon image still showing the previous pokemon
       setTimeout(() => {
         this.isLoading = false;
+        this.showNextRoundButton = true;
       }, 500)
 
     }
@@ -54,6 +64,7 @@ export class GameComponent implements OnInit{
   resetGame() {
     this.gameService.restart();
     this.restartGame.emit();
+    this.showNextRoundButton = false;
   }
 
 }

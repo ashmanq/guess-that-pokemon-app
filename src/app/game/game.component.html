@@ -11,7 +11,8 @@
     <div class="button-section">
         @if(!roundResult){
         <app-selection-buttons (optionSelected)="handleOptionSelected($event)" />
-        }@else {
+        }
+        @if(showNextRoundButton) {
             <div>
                 <p>Click to go to the next round!</p>
                 <button class="next-round-button" (click)="startNewRound()">{{"Round " + getNextRoundNumber()}}</button>

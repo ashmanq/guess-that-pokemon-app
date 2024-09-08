@@ -1,27 +1,43 @@
+@import "variables";
+
+section {
+    h1, h2 {
+        font-size: 1.5rem;
+    }
+}
+
 .score-section {
-    display: flex;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+
+  @media (min-width: $layout-breakpoint-xtra-small) {
     justify-content: center;
+    flex-direction: row;
+  }
 }
 
 .score-balls {
-    display: flex;
-    margin: 0rem 2rem;
+  display: flex;
+  margin: 0rem 2rem;
 }
 
 .score-pokeball {
-    width: 40px;
-    height: 100%;
+  width: 40px;
+  height: 100%;
 }
 
 .none {
-    filter: contrast(0.2);
+  filter: contrast(0.2);
 }
 
 .success {
-    filter: invert(63%) sepia(49%) saturate(6477%) hue-rotate(69deg) brightness(91%) contrast(105%);
+  filter: invert(63%) sepia(49%) saturate(6477%) hue-rotate(69deg)
+    brightness(91%) contrast(105%);
 }
 
 .fail {
-    filter: invert(14%) sepia(72%) saturate(5223%) hue-rotate(356deg) brightness(90%) contrast(118%);
+  filter: invert(14%) sepia(72%) saturate(5223%) hue-rotate(356deg)
+    brightness(90%) contrast(118%);
 }

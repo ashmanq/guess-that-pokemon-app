@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 import { GameRound, Pokemon, PokemonListItem } from "./game.model";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, lastValueFrom } from "rxjs";
@@ -11,6 +11,7 @@ const SCORE_PER_ROUND = 1;
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
+    receivedResult = signal<string | undefined>(undefined);
     private noOfRounds = NO_OF_ROUNDS;
     private noOfOptions = NO_OF_OPTIONS;
     private scorePerRound = SCORE_PER_ROUND;
@@ -22,6 +23,7 @@ export class GameService {
     // BehaviorSubject to hold the current Pokémon name
     private currentRoundPokemonNameSubject = new BehaviorSubject<string | number | undefined>(undefined);
     public currentRoundPokemonNameObservable = this.currentRoundPokemonNameSubject.asObservable();
+
 
     constructor(private http: HttpClient) {
         // This service can now make HTTP requests via `this.http`.
@@ -150,7 +152,6 @@ export class GameService {
     }
 
     checkResult(selection: string) {
-        console.log("Also here")
         if (this.currentRound >= 0 && this.currentRound < this.noOfRounds) {
             const currentGameRound = this.gameRounds[this.currentRound];
             // Store previous value
@@ -164,6 +165,7 @@ export class GameService {
             // If the result is toggled then we signal a change for the pokemon name
             if (prevGameRoundResult !== currentGameRound?.result){
                 this.currentRoundPokemonNameSubject.next(currentGameRound.result)
+                this.receivedResult.set(currentGameRound?.result)
             }
         }
     }
@@ -171,6 +173,7 @@ export class GameService {
     incrementRound() {
         this.currentRound = this.currentRound + 1;
         this.currentRoundPokemonNameSubject.next(this.gameRounds[this.currentRound].result);
+        this.receivedResult.set(this.gameRounds[this.currentRound].result);
     }
 
     restart() {

@@ -13,7 +13,7 @@ import { GameService } from './game/game.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  gameStarted: boolean = true;
+  gameStarted: boolean = false;
 
   ngOnInit() {
   }

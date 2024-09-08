@@ -1,0 +1,14 @@
+@import 'variables';
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.selection-button-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}

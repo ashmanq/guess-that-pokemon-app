@@ -2,8 +2,21 @@
 
 
 header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100%;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
     font-family: 'pokemon';
+
+    h1 {
+        font-size: 2rem;
+
+        @media (min-width: $layout-breakpoint-xtra-small) {
+            font-size: 3rem;
+          }
+
+        @media (min-width: $layout-breakpoint-small) {
+            font-size: 5rem;
+          }
+    }
 }

@@ -1,5 +1,5 @@
-<app-header />
 <main>
+  <app-header />
   @if(gameStarted) {
     <app-game (restartGame)="resetGame()" />
   } @else {
