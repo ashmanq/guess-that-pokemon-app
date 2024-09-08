@@ -48,7 +48,9 @@ h2, .poke-text {
 
 button {
     cursor: pointer;
-    font-family: 'pokemon';
+    // font-family: 'pokemon';
+    font-weight: bold;
+    text-transform: capitalize;
     color: $pokemon-blue-colour;
     border-radius: 5px;
     border-style: solid;

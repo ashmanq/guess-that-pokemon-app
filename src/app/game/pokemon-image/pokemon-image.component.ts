@@ -1,6 +1,7 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { GameService } from '../game.service';
 import { NgOptimizedImage } from '@angular/common';
+import { Subscription, timeInterval } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-image',
@@ -9,8 +10,33 @@ import { NgOptimizedImage } from '@angular/common';
   templateUrl: './pokemon-image.component.html',
   styleUrl: './pokemon-image.component.scss'
 })
-export class PokemonImageComponent {
+export class PokemonImageComponent implements OnInit, OnDestroy {
   private gameService = inject(GameService);
+  pName = "";
+  private pokemonNameSubscription: Subscription | undefined;
+  animationDurationSecs = 2;
+
+  constructor() {
+  }
+
+  ngOnInit(): void {
+    this.pokemonNameSubscription = this.gameService.currentRoundPokemonNameObservable.subscribe((result) => {
+      console.log("Name Change: ", result)
+      if (result) {
+        setTimeout(() => {
+          this.pName = this.gameService.getCurrentRoundPokemonName();
+        }, this.animationDurationSecs * 1000)
+      } else {
+        this.pName = ""
+      }
+    })
+  }
+
+  ngOnDestroy(): void {
+    if (this.pokemonNameSubscription) {
+      this.pokemonNameSubscription.unsubscribe();
+    }
+  }
 
   get pokemonImage() {
     return this.gameService.getCurrentRoundImageUrl();
@@ -26,6 +52,10 @@ export class PokemonImageComponent {
 
   get result() {
     return this.gameService.getCurrentRoundResult();
+  }
+
+  get animationDuration() {
+    return `${this.animationDurationSecs}s`
   }
 
 }

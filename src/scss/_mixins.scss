@@ -1,0 +1,8 @@
+@mixin add-color($argument) {
+    $string: unquote($argument);
+  
+    &--#{$string} {
+      color: unquote('#' + $argument);
+    }
+  }
+  

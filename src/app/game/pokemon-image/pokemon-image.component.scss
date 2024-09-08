@@ -1,4 +1,7 @@
-@import "variables";
+@import 'variables';
+@import 'mixins';
+
+
 $drop-shadow: drop-shadow(-10px 10px 0px rgb(47, 47, 47));
 
 section {
@@ -25,6 +28,20 @@ section {
 
   &.hide {
     filter: contrast(0%) hue-rotate(180deg) $drop-shadow;
+  }
+
+  &.show {
+    animation-name: show-pokemon;
+    animation-duration: var(--animation-duration);
+  }
+}
+
+@keyframes show-pokemon {
+  from {
+    filter: contrast(0%) hue-rotate(0deg);
+  }
+  to {
+    filter: contrast(100%) hue-rotate(0deg);
   }
 }
 

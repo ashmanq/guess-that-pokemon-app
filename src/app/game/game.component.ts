@@ -30,13 +30,10 @@ export class GameComponent implements OnInit{
 
 
   handleOptionSelected(selection: string) {
-    // this.optionSelected = true;
-    console.log("Selection: ", selection);
     this.gameService.checkResult(selection);
   }
 
   async startNewRound() {
-    console.log("Round!", this.gameService.isFinalRound())
     if(this.gameService.isFinalRound()){
       this.isFinished = true;
     } else {
@@ -45,9 +42,13 @@ export class GameComponent implements OnInit{
       // We introduce a time delay to prevent the pokemon image still showing the previous pokemon
       setTimeout(() => {
         this.isLoading = false;
-      }, 1000)
+      }, 500)
 
     }
+  }
+
+  getNextRoundNumber() {
+    return this.gameService.getCurrentRound() + 1;
   }
 
   resetGame() {

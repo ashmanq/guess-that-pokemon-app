@@ -26,4 +26,8 @@ export class GameScoreComponent {
   get maxRounds() {
     return this.gameService.getMaxRounds();
   }
+
+  get allResults() {
+    return this.gameService.getAllResults();
+  }
 }

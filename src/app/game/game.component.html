@@ -1,7 +1,8 @@
 <section>
     @if(isLoading) {
     <div class="loading-section">
-        <h2>Loading</h2>
+        <img class="loading-image" src="/images/pokeball.svg" />
+        <p class="poke-text loading-text">Loading</p>
     </div>
     } @else {
     <app-game-score />
@@ -11,8 +12,14 @@
         @if(!roundResult){
         <app-selection-buttons (optionSelected)="handleOptionSelected($event)" />
         }@else {
-        <button class="next-round-button" (click)="startNewRound()">Next Round</button>
+            <div>
+                <p>Click to go to the next round!</p>
+                <button class="next-round-button" (click)="startNewRound()">{{"Round " + getNextRoundNumber()}}</button>
+            </div>
         }
+    </div>
+    <div class="exit-button-section">
+        <button class="exit-button" title="Click to exit game" (click)="resetGame()">Exit</button>
     </div>
     } @else {
     <div class="button-section">

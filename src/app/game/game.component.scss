@@ -1,28 +1,72 @@
-@import 'variables';
+@import "variables";
 
 section {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.exit-button-section {
+    display: flex;
+    justify-content: end;
+}
+
+.exit-button {
+    background-color: $pokemon-red-colour;
+    color: white;
+    margin-top: 2rem;
+    font-size: 1rem;
+    min-width: 100px;
 }
 
 .button-section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 1rem;
-    text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 1rem;
+  text-align: center;
 
-    @media (min-width: $layout-breakpoint-xtra-small) {
-        margin-top: 2rem;
-    }
+  @media (min-width: $layout-breakpoint-xtra-small) {
+    margin-top: 2rem;
+  }
 }
 
 .loading-section {
-    position: absolute;
-    top: 45%;
-    left: 0;
-    margin-top: 0;
-    width: 100%;
-    font-size: 5rem;
-    text-align: center;
+  position: absolute;
+  top: 45%;
+  left: 0;
+  margin-top: 0;
+  width: 100%;
+  font-size: 5rem;
+  text-align: center;
+}
+
+.loading-image {
+  filter: brightness(0.7);
+  width: 150px;
+  animation-name: rock;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+.loading-text {
+  font-size: 3rem;
+  margin-top: 0;
+}
+
+@keyframes rock {
+  0% {
+    transform: rotate3D(0) translateX(0);
+  }
+  25% {
+    transform: rotate3D(0, 0, 1, 30deg) translateX(15px);
+  }
+  50% {
+    transform: rotate3D(0, 0, 1, 0deg) translateX(0px);
+  }
+  75% {
+    transform: rotate3D(0, 0, 1, -30deg) translateX(-15px);
+  }
+  100% {
+    transform: rotate3D(0) translateX(0);
+  }
 }

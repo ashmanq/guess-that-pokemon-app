@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { GameRound, Pokemon, PokemonListItem } from "./game.model";
 import { HttpClient } from "@angular/common/http";
-import { lastValueFrom } from "rxjs";
+import { BehaviorSubject, lastValueFrom } from "rxjs";
 
 const POKEMON_API_URL = `https://pokeapi.co/api/v2/pokemon`;
 const NO_OF_ROUNDS = 5;
@@ -14,13 +14,14 @@ export class GameService {
     private noOfRounds = NO_OF_ROUNDS;
     private noOfOptions = NO_OF_OPTIONS;
     private scorePerRound = SCORE_PER_ROUND;
-
-    private results: boolean[] = [];
-    private pokemonList: PokemonListItem[] = [];
     private gameRounds: GameRound[] = [];
 
     private score: number = 0;
     private currentRound = 0;
+
+    // BehaviorSubject to hold the current Pokémon name
+    private currentRoundPokemonNameSubject = new BehaviorSubject<string | number | undefined>(undefined);
+    public currentRoundPokemonNameObservable = this.currentRoundPokemonNameSubject.asObservable();
 
     constructor(private http: HttpClient) {
         // This service can now make HTTP requests via `this.http`.
@@ -111,7 +112,6 @@ export class GameService {
         return this.gameRounds[this.currentRound].pokemonImageUrl;
     }
 
-
     getCurrentRoundPokemonName() {
         return this.gameRounds[this.currentRound].pokemonName;
     }
@@ -132,29 +132,51 @@ export class GameService {
         return this.gameRounds[this.currentRound]?.result;
     }
 
+    getAllResults() {
+        const allResults: string[] = [];
+        for (let index = 0; index < this.noOfRounds; index++) {
+            const result = this.gameRounds[index]?.result
+            if(!result) {
+                allResults.push("")
+            } else {
+                allResults.push(result);
+            }
+        }
+        return allResults;
+    }
+
     isFinalRound() {
         return (this.currentRound + 1) >= this.noOfRounds;
     }
 
     checkResult(selection: string) {
+        console.log("Also here")
         if (this.currentRound >= 0 && this.currentRound < this.noOfRounds) {
             const currentGameRound = this.gameRounds[this.currentRound];
+            // Store previous value
+            const prevGameRoundResult = currentGameRound?.result;
             if (selection === currentGameRound?.pokemonName) {
                 currentGameRound.result = 'success';
                 this.score = this.score + this.scorePerRound;
             } else {
                 currentGameRound.result = 'fail';
             }
+            // If the result is toggled then we signal a change for the pokemon name
+            if (prevGameRoundResult !== currentGameRound?.result){
+                this.currentRoundPokemonNameSubject.next(currentGameRound.result)
+            }
         }
     }
 
     incrementRound() {
         this.currentRound = this.currentRound + 1;
+        this.currentRoundPokemonNameSubject.next(this.gameRounds[this.currentRound].result);
     }
 
     restart() {
         this.score = 0;
         this.currentRound = 0;
         this.gameRounds = [];
+        this.currentRoundPokemonNameSubject.next(undefined);
     }
 }
