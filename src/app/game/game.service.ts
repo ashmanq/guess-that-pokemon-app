@@ -4,8 +4,8 @@ import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, lastValueFrom } from "rxjs";
 
 const POKEMON_API_URL = `http://localhost:8000`;
-const NO_OF_ROUNDS = 2;
-const NO_OF_OPTIONS = 2;
+const NO_OF_ROUNDS = 5;
+const NO_OF_OPTIONS = 4;
 const SCORE_PER_ROUND = 1;
 
 
