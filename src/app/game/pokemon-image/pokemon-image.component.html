@@ -7,7 +7,7 @@
         </div>
         <div class="pokemon-name-section">
             @if(pName) {
-            <h2 class="pokemon-name">{{ pName }}</h2>
+            <h2 class="pokemon-name" [class.spin]="isNameSet">{{ pName }}</h2>
             <div class="result-svg-section">
                 @if(result === "success") {
                 <img class="result-svg" src="/images/tick.svg" />

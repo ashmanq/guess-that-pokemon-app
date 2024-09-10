@@ -39,14 +39,25 @@ $drop-shadow: drop-shadow(-10px 10px 0px rgb(47, 47, 47));
   width: 250px;
   height: 250px;
   filter: $drop-shadow;
+  animation: show-up;
+  animation-duration: 1s;
 
   &.hide {
-    filter: contrast(10%) hue-rotate(360deg) $drop-shadow;
+    // filter: contrast(10%) hue-rotate(360deg) $drop-shadow;
   }
 
   &.show {
     animation-name: show-pokemon;
     animation-duration: var(--animation-duration);
+  }
+}
+
+@keyframes show-up {
+  0%{
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
@@ -88,6 +99,30 @@ $drop-shadow: drop-shadow(-10px 10px 0px rgb(47, 47, 47));
 
   @media (min-width: $layout-breakpoint-small) {
     font-size: 3rem;
+  }  
+}
+
+.pokemon-name {
+  &.spin{
+    animation-name: spin-animation;
+    animation-duration: 1s;
+  }
+}
+
+@keyframes spin-animation {
+  0% {
+    filter: opacity(0);
+    transform: rotate(0deg) scale(0);
+  }
+  // 50% {
+  //   transform: rotate(180deg)
+  // }
+  // 75% {
+  //   transform: rotate(270deg)
+  // }
+  100% {
+    filter: opacity(1);
+    transform: rotate(360deg) scale(1);
   }
 }
 

@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, output } from '@angular/core';
+import { Component, inject, OnInit, output } from '@angular/core';
 import { GameService } from './game.service';
 import { GameScoreComponent } from "./game-score/game-score.component";
 import { PokemonImageComponent } from "./pokemon-image/pokemon-image.component";
@@ -50,13 +50,9 @@ export class GameComponent implements OnInit{
       this.isFinished = true;
     } else {
       this.isLoading = true;
-      this.gameService.incrementRound();
-      // We introduce a time delay to prevent the pokemon image still showing the previous pokemon
-      setTimeout(() => {
-        this.isLoading = false;
-        this.showNextRoundButton = true;
-      }, 500)
-
+      await this.gameService.incrementRound();
+      this.isLoading = false;
+      this.showNextRoundButton = true;
     }
   }
 

@@ -13,10 +13,6 @@ export class GameScoreComponent {
   allResults = input<Result[]>([]);
   gameService = inject(GameService);
 
-  // get score() {
-  //   return this.gameService.getScore();
-  // }
-
   get maxScore() {
     return this.gameService.getMaxScore();
   }
@@ -28,8 +24,4 @@ export class GameScoreComponent {
   get maxRounds() {
     return this.gameService.getMaxRounds();
   }
-
-  // get allResults() {
-  //   return this.gameService.getAllResults();
-  // }
 }

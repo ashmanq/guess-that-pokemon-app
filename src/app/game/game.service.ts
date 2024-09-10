@@ -162,17 +162,16 @@ export class GameService {
         this.currentRound = this.currentRound + 1;
         this.gameRound = null;
         const newRound = await this.fetchGameRound();
-        if (newRound) {
-            this.currentRoundPokemonNameSubject.next(undefined);
-            this.receivedResultSignal.set(undefined);
-            this.saveResultsToLocalStorage();
-        }
+        this.currentRoundPokemonNameSubject.next(undefined);
+        this.receivedResultSignal.set(undefined);
+        this.saveResultsToLocalStorage();
     }
 
     restart() {
         this.score = 0;
         this.currentRound = 0;
         this.results = [];
+        this.gameRound = null;
         this.currentRoundPokemonNameSubject.next(undefined);
         this.saveResultsToLocalStorage();
     }

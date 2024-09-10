@@ -24,8 +24,9 @@ export class PokemonImageComponent implements OnInit, OnDestroy {
         
         if(this.timeouetID) clearTimeout(this.timeouetID);
 
+        this.pName = name || "";
+        
         this.timeouetID = setTimeout(() => {
-          this.pName = name || "";
           this.resultShown.emit(true);
         }, this.animationDurationSecs * 1000)
       } else {
@@ -54,6 +55,11 @@ export class PokemonImageComponent implements OnInit, OnDestroy {
 
   get animationDuration() {
     return `${this.animationDurationSecs}s`
+  }
+
+  get isNameSet() {
+    if(this.pName.length) return true;
+    return false;
   }
 
 }
