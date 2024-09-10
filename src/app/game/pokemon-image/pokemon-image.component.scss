@@ -131,19 +131,18 @@ $translation-height: calc(30vh);
 }
 
 .pokemon-name-section {
-  font-family: "pokemon";
+  font-family: "Nerko One", cursive;
   color: $pokemon-yellow-colour;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   flex: 1;
-  // width: 100%;
   text-transform: capitalize;
 
   @media (min-width: $layout-breakpoint-xtra-small) {
-    font-size: 2rem;
+    font-size: 3rem;
   }
 
   @media (min-width: $layout-breakpoint-small) {
-    font-size: 3rem;
+    font-size: 4rem;
   }  
 }
 
@@ -169,7 +168,7 @@ $translation-height: calc(30vh);
 .pokemon-question-mark {
   margin: 0;
   max-height: 100px;
-  filter: opacity(0);
+  filter: opacity(0) $drop-shadow;
   animation-name: pokemon-question-show-up;
   animation-duration: var(--animation-duration);
   animation-delay: $pokeball-animation-time;
@@ -183,11 +182,11 @@ $translation-height: calc(30vh);
 @keyframes pokemon-question-show-up {
   0%{
     transform: scale(0);
-    filter: opacity(0);
+    filter: opacity(0) $drop-shadow;
   }
   100% {
     transform: scale(1);
-    filter: opacity(1);
+    filter: opacity(1) $drop-shadow;
   }
 }
 
