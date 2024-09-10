@@ -25,17 +25,16 @@ section {
 }
 
 .exit-button-section {
-  // max-width: $max-width;
-  // margin: auto;
   display: flex;
   justify-content: end;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .exit-button {
   background-color: $pokemon-red-colour;
   color: white;
   font-size: 1rem;
+  padding: 0.5rem;
   min-width: 100px;
 }
 

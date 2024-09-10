@@ -51,7 +51,7 @@ button {
 
     padding: 0.5rem;
     margin: 0.5rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     width: 100%;
 
     &:hover {
@@ -59,7 +59,7 @@ button {
     }
 
     @media (min-width: $layout-breakpoint-xtra-small) {
-        font-size: 2rem;
+        font-size: 1.5rem;
         padding: 1rem;
         margin: 1rem;
         width: auto;
