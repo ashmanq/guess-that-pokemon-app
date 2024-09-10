@@ -3,6 +3,7 @@ import { GameService } from './game.service';
 import { GameScoreComponent } from "./game-score/game-score.component";
 import { PokemonImageComponent } from "./pokemon-image/pokemon-image.component";
 import { SelectionButtonsComponent } from "./selection-buttons/selection-buttons.component";
+import { Result } from './game.model';
 
 @Component({
   selector: 'app-game',
@@ -17,20 +18,21 @@ export class GameComponent implements OnInit{
   isLoading: boolean = true;
   isPokemonHidden = true;
   isFinished = false;
-  allResults: string[]= [];
+  isError = false;
+  allResults: Result[]= [];
   private gameService = inject(GameService);
 
   ngOnInit() {
-    this.gameService.fetchGameRounds().then(res => {
+    this.gameService.fetchGameRound().then(res => {
+      if(!res) this.isError = true
       this.isLoading = false;
     })
-    this.allResults = [...this.gameService.getAllResults()];
+    // this.allResults = [...this.gameService.getAllResults()];
   }
 
   get roundResult() {
     return this.gameService.getCurrentRoundResult();
   }
-
 
   handleOptionSelected(selection: string) {
     this.gameService.checkResult(selection);
@@ -39,7 +41,7 @@ export class GameComponent implements OnInit{
   toggleShowNextRound(result: boolean) {
     if(result === true) this.showNextRoundButton = true;
     else this.showNextRoundButton = false;
-    this.allResults = [...this.gameService.getAllResults()];
+    // this.allResults = [...this.gameService.getAllResults()];
   }
 
   async startNewRound() {
@@ -97,9 +99,23 @@ export class GameComponent implements OnInit{
   }
 
   resetGame() {
+    this.isError = false
     this.gameService.restart();
     this.restartGame.emit();
     this.showNextRoundButton = false;
+  }
+
+  async refreshGameRound() {
+    this.isLoading = true;
+    this.isError = false
+
+    const result = await this.gameService.fetchGameRound();
+    if(!result) {
+      this.isError = true
+    } else {
+      this.allResults = [...this.gameService.getAllResults()];
+    }
+    this.isLoading = false;
   }
 
 }

@@ -17,30 +17,6 @@ describe('Game Service', () => {
         gameService = TestBed.inject(GameService);
     })
 
-    it('Should be able to get a list of pokemon', async () => {
-        const noOnPokemonToGet = 12;
-        const pokemonList = await gameService.getPokemonList(noOnPokemonToGet);
-        expect(pokemonList.length).toBe(noOnPokemonToGet);
-    })
-
-    it('Should be able to get a list of unique pokemon', async () => {
-        const noOnPokemonToGet = 32;
-        const pokemonList = await gameService.getPokemonList(noOnPokemonToGet);
-        const pokemonNames = pokemonList.map((pokemon) => pokemon.name);
-        const pokemonSet = new Set(pokemonNames);
-        const checkUnique = pokemonSet.size === pokemonNames.length;
-        expect(checkUnique).toBeTrue();
-    })
-
-    it('Should be able to get shuffle a list of pokemon', async () => {
-        const noOnPokemonToGet = 12;
-        const pokemonList = await gameService.getPokemonList(noOnPokemonToGet);
-        const unshuffledList = [...pokemonList];
-        const shuffledList = GameService.shuffleArray(pokemonList)
-
-        expect(unshuffledList).not.toEqual(shuffledList);
-    })
-
     it('Should be able to get a score', () => {
         const score = gameService.getScore();
         expect(score).toBeInstanceOf(Number);
@@ -71,18 +47,17 @@ describe('Game Service', () => {
     })
 
     it('Should be able to create game rounds', async () => {
-        await gameService.fetchGameRounds();
+        await gameService.fetchGameRound();
         const round = gameService.getCurrentGameRound();
-        expect(round.pokemonName).toBeDefined();
-        expect(round.pokemonUrl).toBeDefined();
-        expect(round.pokemonImageUrl).toBeDefined();
-        expect(round.pokemonOptions).toBeDefined();
+        expect(round?.pokemonIndex).toBeDefined();
+        expect(round?.pokemonImage).toBeDefined();
+        expect(round?.pokemonOptions).toBeDefined();
     })
 
-    it('Should be able to get the current rounds pokemon image url', async () => {
-        await gameService.fetchGameRounds();
-        const imageUrl = gameService.getCurrentRoundImageUrl();
-        expect(imageUrl).toBeDefined();
-    })
+    // it('Should be able to get the current rounds pokemon image url', async () => {
+    //     await gameService.fetchGameRounds();
+    //     const imageUrl = gameService.getCurrentRoundImageUrl();
+    //     expect(imageUrl).toBeDefined();
+    // })
 
 })

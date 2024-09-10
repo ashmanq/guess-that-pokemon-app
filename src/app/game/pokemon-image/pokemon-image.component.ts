@@ -18,17 +18,17 @@ export class PokemonImageComponent implements OnInit, OnDestroy {
   animationDurationSecs = 2;
 
   ngOnInit(): void {
-    this.pokemonNameSubscription = this.gameService.currentRoundPokemonNameObservable.subscribe((result) => {
-      if (result) {
-        setTimeout(() => {
-          this.pName = this.gameService.getCurrentRoundPokemonName();
-          this.resultShown.emit(true);
-        }, this.animationDurationSecs * 1000)
-      } else {
-        this.pName = ""
-        this.resultShown.emit(false);
-      }
-    })
+    // this.pokemonNameSubscription = this.gameService.currentRoundPokemonNameObservable.subscribe((result) => {
+    //   if (result) {
+    //     setTimeout(() => {
+    //       this.pName = this.gameService.getCurrentRoundPokemonName() || "";
+    //       this.resultShown.emit(true);
+    //     }, this.animationDurationSecs * 1000)
+    //   } else {
+    //     this.pName = ""
+    //     this.resultShown.emit(false);
+    //   }
+    // })
   }
 
   ngOnDestroy(): void {
@@ -38,15 +38,18 @@ export class PokemonImageComponent implements OnInit, OnDestroy {
   }
 
   get pokemonImage() {
-    return this.gameService.getCurrentRoundImageUrl();
+    return ""
+    // return this.gameService.getCurrentRoundImageUrl();
   }
 
   get imageLabel() {
-    return this.gameService.getCurrentRoundResult() ? this.gameService.getCurrentRoundPokemonName() : "";
+    return ""
+    // return this.gameService.getCurrentRoundResult() ? this.gameService.getCurrentRoundPokemonName() : "";
   }
 
   get pokemonName() {
-    return this.gameService.getCurrentRoundResult() ? this.gameService.getCurrentRoundPokemonName() : "";
+    return ""
+    // return this.gameService.getCurrentRoundResult() ? this.gameService.getCurrentRoundPokemonName() : "";
   }
 
   get result() {

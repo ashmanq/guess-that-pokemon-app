@@ -6,7 +6,7 @@
         <div class="score-balls">
             @for (result of (allResults()); track $index) {
                 @switch (result) {
-                    @case ("") {
+                    @case (undefined) {
                     <img class="score-pokeball none" src="/images/pokeball.svg" />
                     }
                     @case ("success") {
