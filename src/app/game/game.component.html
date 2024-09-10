@@ -26,6 +26,11 @@
             } @else {
                 <div>
                     <h2>{{ finalScoreText }}</h2>
+                    @if(isFullScore){
+                        <div class="top-award">
+                            <img src="/images/100Award.svg" alt="Full score award image">
+                        </div>
+                    }
                     <p class="game-completion-text">{{ finalScoreSubText }}</p>
                 </div>
                 <div class="button-section">

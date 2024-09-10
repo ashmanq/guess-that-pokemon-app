@@ -3,7 +3,7 @@
         <div class="pokemon-image-section">
             <img class="pokemon-background" src="/images/pokeBackground.svg"/>
             <img class="pokemon-image" [class.hide]="!result" [class.show]="result"
-                [style.--animation-duration]="animationDuration" [src]="pokemonImage" [alt]="imageLabel" />
+                [style.--animation-duration]="animationDuration" [src]="pokemonImage" />
         </div>
         <div class="pokemon-name-section">
             @if(pName) {

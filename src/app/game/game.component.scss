@@ -38,6 +38,22 @@ section {
   min-width: 100px;
 }
 
+
+.top-award {
+  display: flex;
+  justify-content: center;
+  img {
+    width: 100px;
+  }
+
+  @media (min-width: $layout-breakpoint-xtra-small) {
+    img {
+      width: 200px;
+    }
+  }
+}
+
+
 .button-section {
   display: flex;
   flex-wrap: wrap;

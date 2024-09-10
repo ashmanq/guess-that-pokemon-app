@@ -4,8 +4,8 @@ import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, lastValueFrom } from "rxjs";
 
 const POKEMON_API_URL = `http://localhost:8000`;
-const NO_OF_ROUNDS = 5;
-const NO_OF_OPTIONS = 4;
+const NO_OF_ROUNDS = 2;
+const NO_OF_OPTIONS = 2;
 const SCORE_PER_ROUND = 1;
 
 
@@ -15,8 +15,6 @@ export class GameService {
     private noOfRounds = NO_OF_ROUNDS;
     private noOfOptions = NO_OF_OPTIONS;
     private scorePerRound = SCORE_PER_ROUND;
-    // private roundImage: HTMLImageElement = new Image();
-    // private gameRounds: GameRound[] = [];
     private gameRound: GameRound | null = null;
     private results: Result[] = [];
 
@@ -38,7 +36,7 @@ export class GameService {
             const url = `${POKEMON_API_URL}/pokemon/verify?id=${pokemonId}&name=${selectedName}`;
             const observable = this.http.get<any>(url);
             const result = await lastValueFrom(observable) as GameResult;
-            console.log("Verify result: ", result)
+            // console.log("Verify result: ", result)
             return result as GameResult;
         } catch (error) {
             console.error("Error checking game result!");
@@ -49,10 +47,11 @@ export class GameService {
 
      async fetchGameRound(): Promise<any> {
         try {
-            let url = `${POKEMON_API_URL}/pokemon/random/`;
+            let url = `${POKEMON_API_URL}/pokemon/random/?noOfPokemon=${this.noOfOptions}`;
             if(this.results.length){
-                const resultsStringified = JSON.stringify(this.results);
-                url = url + "?"
+                const previousPokemonIds = this.results.map(result => result.pokemonId)
+                const resultsStringified = JSON.stringify(previousPokemonIds);
+                url = url + `&previousPokemonIds=${resultsStringified}`
             }
             const observable = this.http.get<any>(url);
             const result = await lastValueFrom(observable);
@@ -71,14 +70,14 @@ export class GameService {
             }
 
             this.gameRound = newRound;
-            return true;
+            return newRound;
     
         } catch (error) {
             console.error("Error getting game round!");
             console.error(error);
             return false;
         }
-    
+
     }
 
 
@@ -149,6 +148,7 @@ export class GameService {
             let currentResult = this.results[this.currentRound].gameResult;
 
             if (prevGameRoundResult !== currentResult) {
+                console.log("Ho!")
                 this.currentRoundPokemonNameSubject.next(response.pokemonName)
                 this.receivedResultSignal.set(currentResult)
             }
@@ -162,11 +162,12 @@ export class GameService {
     async incrementRound() {
         this.currentRound = this.currentRound + 1;
         this.gameRound = null;
-        await this.fetchGameRound();
-
-        this.currentRoundPokemonNameSubject.next(undefined);
-        this.receivedResultSignal.set(this.results[this.currentRound]?.gameResult);
-        this.saveResultsToLocalStorage();
+        const newRound = await this.fetchGameRound();
+        if (newRound) {
+            this.currentRoundPokemonNameSubject.next(undefined);
+            this.receivedResultSignal.set(undefined);
+            this.saveResultsToLocalStorage();
+        }
     }
 
     restart() {

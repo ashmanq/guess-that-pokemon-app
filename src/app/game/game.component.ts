@@ -98,6 +98,9 @@ export class GameComponent implements OnInit{
     if (score === 100) return "Well done, you guessed every Pokemon correctly!";
     return ""
   }
+  get isFullScore() {
+    return this.gameService.getScore() == this.gameService.getMaxScore()
+  }
 
 
   updateAllResults() {

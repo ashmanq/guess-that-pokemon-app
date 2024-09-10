@@ -15,13 +15,16 @@ export class PokemonImageComponent implements OnInit, OnDestroy {
   private pokemonNameSubscription: Subscription | undefined;
   resultShown = output<boolean>();
   pName = "";
-  animationDurationSecs = 2;
-  timeoueID: NodeJS.Timeout | null = null;
+  animationDurationSecs = 1;
+  timeouetID: any = null;
 
   ngOnInit(): void {
     this.pokemonNameSubscription = this.gameService.currentRoundPokemonNameObservable.subscribe(async (name) => {
       if (name) {
-        this.timeoueID = setTimeout(() => {
+        
+        if(this.timeouetID) clearTimeout(this.timeouetID);
+
+        this.timeouetID = setTimeout(() => {
           this.pName = name || "";
           this.resultShown.emit(true);
         }, this.animationDurationSecs * 1000)
@@ -36,23 +39,13 @@ export class PokemonImageComponent implements OnInit, OnDestroy {
     if (this.pokemonNameSubscription) {
       this.pokemonNameSubscription.unsubscribe();
     }
-    if(this.timeoueID) {
-      clearTimeout(this.timeoueID)
+    if(this.timeouetID) {
+      clearTimeout(this.timeouetID)
     }
   }
 
   get pokemonImage() {
     return this.gameService.getCurrentRoundImage();
-  }
-
-  get imageLabel() {
-    return ""
-    // return this.gameService.getCurrentRoundResult() ? this.gameService.getCurrentRoundPokemonName() : "";
-  }
-
-  get pokemonName() {
-    return ""
-    // return this.gameService.getCurrentRoundResult() ? this.gameService.getCurrentRoundPokemonName() : "";
   }
 
   get result() {

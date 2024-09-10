@@ -13,9 +13,15 @@ import { GameService } from './game/game.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  gameStarted: boolean = true;
+  gameStarted: boolean = false;
+  gameService = inject(GameService);
 
   ngOnInit() {
+    // Check if there are any saved game data
+    const result = this.gameService.getAllResults();
+    if (result.length){
+      this.gameStarted = true;
+    }
   }
 
   startGame() {

@@ -23,7 +23,7 @@ describe('PokemonImageComponent', () => {
     httpTesting = TestBed.inject(HttpTestingController);
     gameService = TestBed.inject(GameService);
 
-    await gameService.fetchGameRounds();
+    await gameService.fetchGameRound();
 
     fixture = TestBed.createComponent(PokemonImageComponent);
     component = fixture.componentInstance;
