@@ -45,11 +45,25 @@ section {
   img {
     width: 100px;
   }
+  animation: award-show-up;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
 
   @media (min-width: $layout-breakpoint-xtra-small) {
     img {
       width: 200px;
     }
+  }
+}
+
+@keyframes award-show-up {
+  0%{
+    transform: scale(0);
+    filter: opacity(0);
+  }
+  100% {
+    transform: scale(1);
+    filter: (1);
   }
 }
 
@@ -86,7 +100,7 @@ section {
   filter: brightness(0.7);
   width: 150px;
   animation-name: rock;
-  animation-duration: 1s;
+  animation-duration: 1.5s;
   animation-iteration-count: infinite;
 }
 
@@ -99,13 +113,13 @@ section {
   0% {
     transform: rotate3D(0) translateX(0);
   }
-  25% {
+  15% {
     transform: rotate3D(0, 0, 1, 30deg) translateX(15px);
   }
   50% {
     transform: rotate3D(0, 0, 1, 0deg) translateX(0px);
   }
-  75% {
+  85% {
     transform: rotate3D(0, 0, 1, -30deg) translateX(-15px);
   }
   100% {

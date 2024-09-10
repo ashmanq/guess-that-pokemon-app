@@ -43,12 +43,9 @@ $pokeball-animation-time: 1s;
 
   width: $pokemon-image-background-size;
   height: $pokemon-image-background-size;
-  // top:25%;
-  // left:50%;
   filter: opacity(0);
   animation-name: poke-ball-animation;
   animation-duration: $pokeball-animation-time;
-  // animation-iteration-count: infinite;
 
   @media (min-width: $layout-breakpoint-xtra-small) {
     width: $pokemon-image-background-size + 100px;
@@ -66,12 +63,12 @@ $translation-height: calc(30vh);
 
 @keyframes poke-ball-animation {
   0% {
-    transform: rotate(0deg) translateX($translation-width) translateY($translation-height) rotate(0);
+    transform: scale(1) rotate(0deg) translateX($translation-width) translateY($translation-height) rotate(0);
     filter: opacity(1);
   }
-  100% {
+  50% {
+    transform: scale(0.2) rotate(-200deg) translateX(0px) translateY(0px) rotate(200deg);
     filter: opacity(0);
-    transform: rotate(-360deg) translateX(0px) translateY(0px) rotate(360deg)
   }
 }
 
@@ -94,6 +91,7 @@ $translation-height: calc(30vh);
     animation-duration: var(--animation-duration);
     animation-delay: $pokeball-animation-time;
     animation-fill-mode: forwards;
+    animation-timing-function: ease-in;
   }
 }
 
@@ -121,7 +119,6 @@ $translation-height: calc(30vh);
   flex: 1;
   height: 100%;
   display: flex;
-  overflow: hidden;
   justify-content: center;
   align-items: center;
   @media (min-width: $layout-breakpoint-xtra-small) {
@@ -154,7 +151,7 @@ $translation-height: calc(30vh);
   &.spin{
     animation-name: spin-animation;
     animation-duration: var(--animation-duration);
-    animation-timing-function: linear;
+    animation-timing-function: ease-in-out;
   }
 }
 
