@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
   }
 
   resetGame() {
-    console.log("Restarting!")
     this.gameStarted = false;
   }
 }

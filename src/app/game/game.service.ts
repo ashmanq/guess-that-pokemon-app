@@ -148,7 +148,6 @@ export class GameService {
             let currentResult = this.results[this.currentRound].gameResult;
 
             if (prevGameRoundResult !== currentResult) {
-                console.log("Ho!")
                 this.currentRoundPokemonNameSubject.next(response.pokemonName)
                 this.receivedResultSignal.set(currentResult)
             }
