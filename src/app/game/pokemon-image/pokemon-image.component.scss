@@ -45,7 +45,7 @@ $drop-shadow: drop-shadow(-10px 10px 0px rgb(47, 47, 47));
   filter: $drop-shadow;
 
   &.hide {
-    filter: contrast(0%) hue-rotate(180deg) $drop-shadow;
+    // filter: contrast(0%) hue-rotate(180deg) $drop-shadow;
   }
 
   &.show {

@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { GameService } from '../game.service';
 import { Result } from '../game.model';
 

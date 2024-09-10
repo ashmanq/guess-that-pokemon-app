@@ -27,7 +27,7 @@ export class GameComponent implements OnInit{
       if(!res) this.isError = true
       this.isLoading = false;
     })
-    // this.allResults = [...this.gameService.getAllResults()];
+    this.allResults = [...this.gameService.getAllResults()];
   }
 
   get roundResult() {
@@ -41,7 +41,7 @@ export class GameComponent implements OnInit{
   toggleShowNextRound(result: boolean) {
     if(result === true) this.showNextRoundButton = true;
     else this.showNextRoundButton = false;
-    // this.allResults = [...this.gameService.getAllResults()];
+    this.allResults = [...this.gameService.getAllResults()];
   }
 
   async startNewRound() {
@@ -73,9 +73,10 @@ export class GameComponent implements OnInit{
       return "Click to view final score!";
     }
     let resultText = "";
-    if(this.gameService.getCurrentRoundResult() == "success") {
+    const currentResult = this.gameService.getCurrentRoundResult()?.gameResult
+    if(currentResult == "success") {
       resultText += "Congratulations! ";
-    } else if (this.gameService.getCurrentRoundResult() == "fail")  {
+    } else if (currentResult == "fail")  {
       resultText += "Better luck next time. "
     }
     return resultText += "Click to go to the next round!";
@@ -96,6 +97,16 @@ export class GameComponent implements OnInit{
     const score = this.gameService.getScore()/this.gameService.getMaxScore() * 100;
     if (score === 100) return "Well done, you guessed every Pokemon correctly!";
     return ""
+  }
+
+
+  updateAllResults() {
+    const paddedResult = [...this.allResults];
+    const maxRounds = this.gameService.getMaxRounds();
+    for (let i = this.allResults.length; i++; i < maxRounds) {
+      // paddedResult.push({undefined})
+    }
+
   }
 
   resetGame() {

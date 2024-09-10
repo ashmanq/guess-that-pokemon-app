@@ -18,15 +18,18 @@ export type Pokemon = {
 }
 
 export type GameRound = {
-    pokemonImage: HTMLImageElement;
+    pokemonImage: string;
     pokemonIndex: number;
     pokemonOptions: string[];
 }
 
 export type GameResult = {
-    pokemonImageUrl: string;
+    pokemonImage: string;
     pokemonName: string;
-    result: Result;
+    result: boolean;
 }
 
-export type Result = "success" | "fail" | undefined;
+export type Result = {
+    gameResult: "success" | "fail" | undefined;
+    pokemonId: number
+}

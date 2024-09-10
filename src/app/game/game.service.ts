@@ -24,7 +24,7 @@ export class GameService {
     private currentRound = 0;
 
     // BehaviorSubject to hold the current Pokémon name
-    private currentRoundPokemonNameSubject = new BehaviorSubject<string | number | undefined>(undefined);
+    private currentRoundPokemonNameSubject = new BehaviorSubject<string | undefined>(undefined);
     public currentRoundPokemonNameObservable = this.currentRoundPokemonNameSubject.asObservable();
 
 
@@ -37,7 +37,8 @@ export class GameService {
         try {
             const url = `${POKEMON_API_URL}/pokemon/verify?id=${pokemonId}&name=${selectedName}`;
             const observable = this.http.get<any>(url);
-            const result = await lastValueFrom(observable);
+            const result = await lastValueFrom(observable) as GameResult;
+            console.log("Verify result: ", result)
             return result as GameResult;
         } catch (error) {
             console.error("Error checking game result!");
@@ -48,16 +49,20 @@ export class GameService {
 
      async fetchGameRound(): Promise<any> {
         try {
-            const url = `${POKEMON_API_URL}/pokemon/random/`;
+            let url = `${POKEMON_API_URL}/pokemon/random/`;
+            if(this.results.length){
+                const resultsStringified = JSON.stringify(this.results);
+                url = url + "?"
+            }
             const observable = this.http.get<any>(url);
             const result = await lastValueFrom(observable);
             
             const imageBase64Data = result?.pokemonImage;
             const options = result?.pokemonOptions;
             const selectedPokemonIndex = result?.selectedPokemonIndex;
-            let imageData = new Image();
+            let imageData: string = "";
             
-            if (imageBase64Data) imageData.src = 'data:image/png;base64,' + imageBase64Data;
+            if (imageBase64Data) imageData = 'data:image/png;base64,' + imageBase64Data;
 
             const newRound: GameRound = {
                 pokemonImage: imageData,
@@ -66,9 +71,7 @@ export class GameService {
             }
 
             this.gameRound = newRound;
-
-            console.log("Result: ", result)
-            return false;
+            return true;
     
         } catch (error) {
             console.error("Error getting game round!");
@@ -116,6 +119,10 @@ export class GameService {
         return this.receivedResultSignal;
     }
 
+    getCurrentRoundImage() {
+        return this.gameRound?.pokemonImage;
+    }
+
     isFinalRound() {
         return (this.currentRound + 1) >= this.noOfRounds;
     }
@@ -123,29 +130,42 @@ export class GameService {
     async checkResult(selection: string) {
         const currentPokemonIndex = this.gameRound?.pokemonIndex;
         if (this.currentRound >= 0 && this.currentRound < this.noOfRounds && currentPokemonIndex) {
-            let currentResult = this.results[this.currentRound];
             // Store previous value
-            const prevGameRoundResult = this.results[this.currentRound];
+            const prevGameRoundResult = this.results[this.currentRound]?.gameResult;
+            const response = await this.fetchGameResult(currentPokemonIndex, selection)
+            if(!response) return null;
 
-            const gameResult = await this.fetchGameResult(currentPokemonIndex, selection)
-            if(!gameResult) return null;
-            this.results[this.currentRound] = gameResult.result;
+            const responseResult = response.result ? "success" : "fail";
+
+            if(responseResult == "success") this.score = this.score + this.scorePerRound;
+
+            this.results[this.currentRound] = {
+                gameResult: responseResult,
+                pokemonId: currentPokemonIndex
+            }
+
+            if(this.gameRound) this.gameRound.pokemonImage = response.pokemonImage
+            
+            let currentResult = this.results[this.currentRound].gameResult;
 
             if (prevGameRoundResult !== currentResult) {
-                this.currentRoundPokemonNameSubject.next(this.results[this.currentRound])
-                this.receivedResultSignal.set(this.results[this.currentRound])
+                this.currentRoundPokemonNameSubject.next(response.pokemonName)
+                this.receivedResultSignal.set(currentResult)
             }
 
             this.saveResultsToLocalStorage();
-            return gameResult;
+            return response;
         }
         return null;
     }
 
-    incrementRound() {
+    async incrementRound() {
         this.currentRound = this.currentRound + 1;
-        this.currentRoundPokemonNameSubject.next(this.results[this.currentRound]);
-        this.receivedResultSignal.set(this.results[this.currentRound]);
+        this.gameRound = null;
+        await this.fetchGameRound();
+
+        this.currentRoundPokemonNameSubject.next(undefined);
+        this.receivedResultSignal.set(this.results[this.currentRound]?.gameResult);
         this.saveResultsToLocalStorage();
     }
 
@@ -161,26 +181,27 @@ export class GameService {
         localStorage.setItem('pokemonRounds', JSON.stringify(this.results));
     }
 
-    private initialiseFromLocalStorage(): string[] | undefined {
+    private initialiseFromLocalStorage(): boolean {
         const storedResults = localStorage.getItem('pokemonRounds');
         if (storedResults) {
-            const loadedGameRounds: string[] = JSON.parse(storedResults) as string[];
+            const loadedGameRounds: Result[] = JSON.parse(storedResults) as Result[];
             let newScore = 0;
             let newCurentRound = undefined;
             for (let index = 0; index < loadedGameRounds.length; index++) {
-                const result = loadedGameRounds[index];
-                if (result !== undefined) {
+                const round = loadedGameRounds[index];
+                if (round?.gameResult !== undefined) {
                     newCurentRound = index;
-                    if(result === "success") newScore = newScore + (this.scorePerRound);
+                    if(round?.gameResult === "success") newScore = newScore + (this.scorePerRound);
                 }
             }
             // Ensure we haven't completed the game and the number of rounds matches the current setting
-            if(newCurentRound !== undefined && (newCurentRound + 1) < this.noOfRounds && loadedGameRounds.length === this.noOfRounds){
+            if(newCurentRound !== undefined && (newCurentRound + 1) < this.noOfRounds && loadedGameRounds.length <= this.noOfRounds){
                 this.score = newScore;
                 this.currentRound = newCurentRound + 1;
-                return loadedGameRounds;
+                this.results  =[...loadedGameRounds]
+                return true;
             }
         }
-        return undefined;
+        return false;
     }
 }
