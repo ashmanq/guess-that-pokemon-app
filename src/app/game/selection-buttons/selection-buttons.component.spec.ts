@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SelectionButtonsComponent } from './selection-buttons.component';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { GameService } from '../game.service';
+import { GameService } from '../../../shared/services/game.service';
 
 describe('SelectionButtonsComponent', () => {
   let component: SelectionButtonsComponent;

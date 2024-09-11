@@ -1,7 +1,11 @@
 @import "variables";
 
 section {
-    h1, h2 {
+    h1 {
+      font-size: 2rem;
+      margin: 0.5rem;
+    } 
+    h2 {
         font-size: 1.5rem;
     }
 }
@@ -11,6 +15,8 @@ section {
   flex-direction: column;
   width: 100%;
   align-items: center;
+  min-height: 40px;
+  margin: 1rem 0;
 
   @media (min-width: $layout-breakpoint-xtra-small) {
     justify-content: center;

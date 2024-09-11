@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit, output } from '@angular/core';
-import { GameService } from '../game.service';
+import { GameService } from '../../../shared/services/game.service';
 import { NgOptimizedImage } from '@angular/common';
-import { Subscription, timeInterval } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-image',
@@ -15,13 +15,18 @@ export class PokemonImageComponent implements OnInit, OnDestroy {
   private pokemonNameSubscription: Subscription | undefined;
   resultShown = output<boolean>();
   pName = "";
-  animationDurationSecs = 2;
+  animationDurationSecs = 1;
+  timeouetID: any = null;
 
   ngOnInit(): void {
-    this.pokemonNameSubscription = this.gameService.currentRoundPokemonNameObservable.subscribe((result) => {
-      if (result) {
-        setTimeout(() => {
-          this.pName = this.gameService.getCurrentRoundPokemonName();
+    this.pokemonNameSubscription = this.gameService.currentRoundPokemonNameObservable.subscribe(async (name) => {
+      if (name) {
+        
+        if(this.timeouetID) clearTimeout(this.timeouetID);
+
+        this.pName = name || "";
+        
+        this.timeouetID = setTimeout(() => {
           this.resultShown.emit(true);
         }, this.animationDurationSecs * 1000)
       } else {
@@ -35,26 +40,26 @@ export class PokemonImageComponent implements OnInit, OnDestroy {
     if (this.pokemonNameSubscription) {
       this.pokemonNameSubscription.unsubscribe();
     }
+    if(this.timeouetID) {
+      clearTimeout(this.timeouetID)
+    }
   }
 
   get pokemonImage() {
-    return this.gameService.getCurrentRoundImageUrl();
-  }
-
-  get imageLabel() {
-    return this.gameService.getCurrentRoundResult() ? this.gameService.getCurrentRoundPokemonName() : "";
-  }
-
-  get pokemonName() {
-    return this.gameService.getCurrentRoundResult() ? this.gameService.getCurrentRoundPokemonName() : "";
+    return this.gameService.getCurrentRoundImage();
   }
 
   get result() {
-    return this.gameService.getCurrentRoundResult();
+    return this.gameService.getCurrentRoundResult()?.gameResult;
   }
 
   get animationDuration() {
     return `${this.animationDurationSecs}s`
+  }
+
+  get isNameSet() {
+    if(this.pName.length) return true;
+    return false;
   }
 
 }

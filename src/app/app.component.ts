@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./header/header.component";
 import { IntroComponent } from "./intro/intro.component";
 import { GameComponent } from "./game/game.component";
-import { GameService } from './game/game.service';
+import { GameService } from '../shared/services/game.service';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +13,15 @@ import { GameService } from './game/game.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  gameStarted: boolean = true;
+  gameStarted: boolean = false;
+  gameService = inject(GameService);
 
   ngOnInit() {
+    // Check if there are any saved game data
+    const result = this.gameService.getAllResults();
+    if (result.length){
+      this.gameStarted = true;
+    }
   }
 
   startGame() {
@@ -23,7 +29,6 @@ export class AppComponent implements OnInit {
   }
 
   resetGame() {
-    console.log("Restarting!")
     this.gameStarted = false;
   }
 }

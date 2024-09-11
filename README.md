@@ -7,7 +7,7 @@ To install dependencies for this app run the following code:
 
 `npm install`
 
-## Run The App
+## Run the app
 
 To run the app cd into the app directory in therminal and run the following command:
 
@@ -15,9 +15,11 @@ To run the app cd into the app directory in therminal and run the following comm
 
 This will run a local version of the app on `https://localhost:4200` by default.
 
-The `main` branch of this repo has the app using the poke API directly without a back end. You can switch to the `use-backend-api` branch to use this app in conjunction with the Django back end API I have created available [here](https://github.com/ashmanq/pokemon-api).
+## Use with API
 
-## Game Instructions
+The `main` branch of this repo has a version of the that **requires** a custom back end Django API, I have created, available [here](https://github.com/ashmanq/pokemon-api). You can switch to the `no-backend` branch to use an older version of the app without the need for a separate backend server.
+
+## Game instructions
 
 When first run the game will show you a start screen. Click the `Start` button to begin a new game.
 

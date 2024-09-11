@@ -1,8 +1,9 @@
-import { Component, effect, inject, OnInit, output } from '@angular/core';
-import { GameService } from './game.service';
+import { Component, inject, OnInit, output } from '@angular/core';
+import { GameService } from '../../shared/services/game.service';
 import { GameScoreComponent } from "./game-score/game-score.component";
 import { PokemonImageComponent } from "./pokemon-image/pokemon-image.component";
 import { SelectionButtonsComponent } from "./selection-buttons/selection-buttons.component";
+import { Result } from './game.model';
 
 @Component({
   selector: 'app-game',
@@ -17,11 +18,13 @@ export class GameComponent implements OnInit{
   isLoading: boolean = true;
   isPokemonHidden = true;
   isFinished = false;
-  allResults: string[]= [];
+  isError = false;
+  allResults: Result[]= [];
   private gameService = inject(GameService);
 
   ngOnInit() {
-    this.gameService.fetchGameRounds().then(res => {
+    this.gameService.fetchGameRound().then(res => {
+      if(!res) this.isError = true
       this.isLoading = false;
     })
     this.allResults = [...this.gameService.getAllResults()];
@@ -31,9 +34,9 @@ export class GameComponent implements OnInit{
     return this.gameService.getCurrentRoundResult();
   }
 
-
-  handleOptionSelected(selection: string) {
-    this.gameService.checkResult(selection);
+  async handleOptionSelected(selection: string) {
+    const result = await this.gameService.checkResult(selection);
+    if(!result) this.isError = true;
   }
 
   toggleShowNextRound(result: boolean) {
@@ -48,13 +51,9 @@ export class GameComponent implements OnInit{
       this.isFinished = true;
     } else {
       this.isLoading = true;
-      this.gameService.incrementRound();
-      // We introduce a time delay to prevent the pokemon image still showing the previous pokemon
-      setTimeout(() => {
-        this.isLoading = false;
-        this.showNextRoundButton = true;
-      }, 500)
-
+      await this.gameService.incrementRound();
+      this.isLoading = false;
+      this.showNextRoundButton = true;
     }
   }
 
@@ -71,9 +70,10 @@ export class GameComponent implements OnInit{
       return "Click to view final score!";
     }
     let resultText = "";
-    if(this.gameService.getCurrentRoundResult() == "success") {
+    const currentResult = this.gameService.getCurrentRoundResult()?.gameResult
+    if(currentResult == "success") {
       resultText += "Congratulations! ";
-    } else if (this.gameService.getCurrentRoundResult() == "fail")  {
+    } else if (currentResult == "fail")  {
       resultText += "Better luck next time. "
     }
     return resultText += "Click to go to the next round!";
@@ -95,11 +95,38 @@ export class GameComponent implements OnInit{
     if (score === 100) return "Well done, you guessed every Pokemon correctly!";
     return ""
   }
+  get isFullScore() {
+    return this.gameService.getScore() == this.gameService.getMaxScore()
+  }
+
+
+  updateAllResults() {
+    const paddedResult = [...this.allResults];
+    const maxRounds = this.gameService.getMaxRounds();
+    for (let i = this.allResults.length; i++; i < maxRounds) {
+      // paddedResult.push({undefined})
+    }
+
+  }
 
   resetGame() {
+    this.isError = false
     this.gameService.restart();
     this.restartGame.emit();
     this.showNextRoundButton = false;
+  }
+
+  async refreshGameRound() {
+    this.isLoading = true;
+    this.isError = false
+
+    const result = await this.gameService.fetchGameRound();
+    if(!result) {
+      this.isError = true
+    } else {
+      this.allResults = [...this.gameService.getAllResults()];
+    }
+    this.isLoading = false;
   }
 
 }

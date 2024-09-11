@@ -1,36 +1,49 @@
 <section>
-    @if(isLoading) {
-    <div class="loading-section">
-        <img class="loading-image" src="/images/pokeball.svg" />
-        <p class="poke-text loading-text">Loading</p>
-    </div>
-    } @else {
-    <app-game-score [allResults]="allResults" />
-    @if(!isFinished){
-    <div class="exit-button-section">
-        <button class="exit-button" title="Click to exit game" (click)="resetGame()">Exit</button>
-    </div>
-    <app-pokemon-image (resultShown)="toggleShowNextRound($event)" />
-    <div class="button-section">
-        @if(!roundResult){
-        <app-selection-buttons (optionSelected)="handleOptionSelected($event)" />
-        }
-        @if(showNextRoundButton) {
-        <div>
-            <p>{{ nextLevelText }}</p>
-            <button class="next-round-button" (click)="startNewRound()">{{nextRoundButtonText}}</button>
+    @if (!isError){
+        @if(isLoading) {
+        <div class="loading-section">
+            <img class="loading-image" src="/images/pokeball.svg" />
+            <p class="poke-text loading-text">Loading</p>
         </div>
+        } @else {
+            <app-game-score [allResults]="allResults" />
+            @if(!isFinished){
+            <div class="exit-button-section">
+                <button class="exit-button" title="Click to exit game" (click)="resetGame()">Exit</button>
+            </div>
+            <app-pokemon-image (resultShown)="toggleShowNextRound($event)" />
+            <div class="button-section">
+                @if(!roundResult){
+                <app-selection-buttons (optionSelected)="handleOptionSelected($event)" />
+                }
+                @if(showNextRoundButton) {
+                <div>
+                    <p>{{ nextLevelText }}</p>
+                    <button class="next-round-button" (click)="startNewRound()">{{nextRoundButtonText}}</button>
+                </div>
+                }
+            </div>
+            } @else {
+                <div>
+                    <h2>{{ finalScoreText }}</h2>
+                    @if(isFullScore){
+                        <div class="top-award">
+                            <img src="/images/100Award.svg" alt="Full score award image">
+                        </div>
+                    }
+                    <p class="game-completion-text">{{ finalScoreSubText }}</p>
+                </div>
+                <div class="button-section">
+                    <button (click)="resetGame()">Finish</button>
+                </div>
+            }
         }
-    </div>
-
     } @else {
-        <div>
-            <h2>{{ finalScoreText }}</h2>
-            <p class="game-completion-text">{{ finalScoreSubText }}</p>
+        <div class="error-container">
+            <p class="error-text">There was an unexpected error, please try refreshing!</p>
+            <img class="error-image" src="images/cross.svg">
+            <button (click)="refreshGameRound()">Refresh</button>
+            <button class="exit-button" title="Click to exit game" (click)="resetGame()">Exit</button>
         </div>
-    <div class="button-section">
-        <button (click)="resetGame()">Finish</button>
-    </div>
-    }
     }
 </section>
