@@ -7,14 +7,14 @@ $drop-shadow: drop-shadow(-10px 10px 0px rgb(47, 47, 47));
 .image-area-container {
   width: 100%;
   display: flex;
+  flex-direction: column;
   text-align: center;
   align-items: center;
   justify-content: center;
-  height: 250px;
   position: relative;
 
   @media (min-width: $layout-breakpoint-xtra-small) {
-    height: 350px;
+    flex-direction: row;
   }
 }
 
@@ -58,8 +58,8 @@ $pokeball-animation-time: 1s;
   }
 }
 
-$translation-width: calc(30vw);
-$translation-height: calc(30vh);
+$translation-width: calc(20vw);
+$translation-height: calc(20vh);
 
 @keyframes poke-ball-animation {
   0% {
@@ -117,7 +117,7 @@ $translation-height: calc(30vh);
 
 .pokemon-image-section {
   flex: 1;
-  height: 100%;
+  // height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -135,6 +135,7 @@ $translation-height: calc(30vh);
   color: $pokemon-yellow-colour;
   font-size: 1.2rem;
   flex: 1;
+  width: 250px;
   text-transform: capitalize;
 
   @media (min-width: $layout-breakpoint-xtra-small) {

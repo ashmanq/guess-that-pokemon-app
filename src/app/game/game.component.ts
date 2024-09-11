@@ -5,6 +5,9 @@ import { PokemonImageComponent } from "./pokemon-image/pokemon-image.component";
 import { SelectionButtonsComponent } from "./selection-buttons/selection-buttons.component";
 import { Result } from './game.model';
 
+
+
+
 @Component({
   selector: 'app-game',
   standalone: true,
@@ -20,15 +23,44 @@ export class GameComponent implements OnInit{
   isFinished = false;
   isError = false;
   allResults: Result[]= [];
+  roundStartAudio: HTMLAudioElement;
+  correctAnswerAudio: HTMLAudioElement;
+  wrongAnswerAudio: HTMLAudioElement;
+  gameFinishAudio: HTMLAudioElement;
   private gameService = inject(GameService);
+
+  constructor(){
+    this.roundStartAudio = new Audio();
+    this.roundStartAudio.src = '/audio/whos-that-pokemon.mp3';
+    this.roundStartAudio.volume = 0.5;
+    this.roundStartAudio.load();
+
+
+    this.correctAnswerAudio = new Audio();
+    this.correctAnswerAudio.src = '/audio/correct-answer-sound.mp3';
+    this.correctAnswerAudio.volume = 0.1;
+    this.correctAnswerAudio.load();
+
+    this.wrongAnswerAudio = new Audio();
+    this.wrongAnswerAudio.src = '/audio/wrong-answer-sound.mp3';
+    this.wrongAnswerAudio.volume = 0.1;
+    this.wrongAnswerAudio.load();
+
+    this.gameFinishAudio = new Audio();
+    this.gameFinishAudio.src = '/audio/game-finish-sound.mp3';
+    this.gameFinishAudio.volume = 0.1;
+    this.gameFinishAudio.load();
+  }
 
   ngOnInit() {
     if(!this.gameService.getCurrentGameRound()){
       this.gameService.fetchGameRound().then(res => {
         if(!res) this.isError = true
+        else this.restartAndPlayAudio(this.roundStartAudio);
         this.isLoading = false;
       })
     } else {
+      this.roundStartAudio.play();
       this.isLoading = false;
     }
     this.allResults = [...this.gameService.getAllResults()];
@@ -36,29 +68,6 @@ export class GameComponent implements OnInit{
 
   get roundResult() {
     return this.gameService.getCurrentRoundResult();
-  }
-
-  async handleOptionSelected(selection: string) {
-    const result = await this.gameService.checkResult(selection);
-    if(!result) this.isError = true;
-  }
-
-  toggleShowNextRound(result: boolean) {
-    if(result === true) this.showNextRoundButton = true;
-    else this.showNextRoundButton = false;
-    this.allResults = [...this.gameService.getAllResults()];
-  }
-
-  async startNewRound() {
-    this.showNextRoundButton = false;
-    if(this.gameService.isFinalRound()){
-      this.isFinished = true;
-    } else {
-      this.isLoading = true;
-      await this.gameService.incrementRound();
-      this.isLoading = false;
-      this.showNextRoundButton = true;
-    }
   }
 
   get getNextRoundNumber() {
@@ -91,7 +100,7 @@ export class GameComponent implements OnInit{
   }
 
   get finalScoreText() {
-    return `Final Score: ${(this.gameService.getScore()/this.gameService.getMaxScore() * 100)}%`
+    return `${(this.gameService.getScore()/this.gameService.getMaxScore() * 100)}%`
   }
 
   get finalScoreSubText() {
@@ -103,14 +112,41 @@ export class GameComponent implements OnInit{
     return this.gameService.getScore() == this.gameService.getMaxScore()
   }
 
+  async handleOptionSelected(selection: string) {
+    const result = await this.gameService.checkResult(selection);
+    if(!result) this.isError = true;
+  }
 
-  updateAllResults() {
-    const paddedResult = [...this.allResults];
-    const maxRounds = this.gameService.getMaxRounds();
-    for (let i = this.allResults.length; i++; i < maxRounds) {
-      // paddedResult.push({undefined})
+  toggleShowNextRound(result: boolean) {
+    const roundResult = this.gameService.getCurrentRoundResult();
+    switch (roundResult?.gameResult) {
+      case "success":
+        this.restartAndPlayAudio(this.correctAnswerAudio);
+        break;
+      case "fail":
+        this.restartAndPlayAudio(this.wrongAnswerAudio);
+        break;
     }
+    if(result === true) this.showNextRoundButton = true;
+    else this.showNextRoundButton = false;
+    this.allResults = [...this.gameService.getAllResults()];
+  }
 
+  async startNewRound() {
+    this.showNextRoundButton = false;
+    if(this.gameService.isFinalRound()){
+      this.isFinished = true;
+    } else {
+      this.isLoading = true;
+      await this.gameService.incrementRound();
+      this.isLoading = false;
+      this.showNextRoundButton = true;
+    }
+    if(!this.isFinished) {
+      this.restartAndPlayAudio(this.roundStartAudio);
+    } else {
+      this.restartAndPlayAudio(this.gameFinishAudio);
+    }
   }
 
   resetGame() {
@@ -131,6 +167,11 @@ export class GameComponent implements OnInit{
       this.allResults = [...this.gameService.getAllResults()];
     }
     this.isLoading = false;
+  }
+
+  private restartAndPlayAudio(audio: HTMLAudioElement) {
+    audio.currentTime = 0;
+    audio.play();
   }
 
 }
