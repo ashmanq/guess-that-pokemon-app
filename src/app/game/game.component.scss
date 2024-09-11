@@ -69,13 +69,13 @@ section {
 
 
 .button-section {
-  display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   margin-top: 1rem;
   text-align: center;
 
   @media (min-width: $layout-breakpoint-xtra-small) {
+    display: flex;
+    flex-wrap: wrap;
     margin-top: 2rem;
   }
 }
