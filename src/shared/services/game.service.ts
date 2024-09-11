@@ -8,6 +8,9 @@ const NO_OF_ROUNDS = 5;
 const NO_OF_OPTIONS = 4;
 const SCORE_PER_ROUND = 1;
 
+const RESULTS_LOCAL_STORAGE_NAME = 'pokemonResults';
+const CURRENT_GAME_ROUND_STORAGE_NAME = 'pokemonGameRound';
+
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
@@ -69,6 +72,7 @@ export class GameService {
             }
 
             this.gameRound = newRound;
+            this.saveCurrentRoundToLocalStorage()
             return newRound;
 
         } catch (error) {
@@ -152,6 +156,7 @@ export class GameService {
             }
 
             this.saveResultsToLocalStorage();
+            this.clearCurrentRoundToLocalStorage();
             return response;
         }
         return null;
@@ -160,7 +165,8 @@ export class GameService {
     async incrementRound() {
         this.currentRound = this.currentRound + 1;
         this.gameRound = null;
-        const newRound = await this.fetchGameRound();
+        this.clearCurrentRoundToLocalStorage();
+        await this.fetchGameRound();
         this.currentRoundPokemonNameSubject.next(undefined);
         this.receivedResultSignal.set(undefined);
         this.saveResultsToLocalStorage();
@@ -173,14 +179,24 @@ export class GameService {
         this.gameRound = null;
         this.currentRoundPokemonNameSubject.next(undefined);
         this.saveResultsToLocalStorage();
+        this.clearCurrentRoundToLocalStorage();
+    }
+
+    private saveCurrentRoundToLocalStorage() {
+        localStorage.setItem(CURRENT_GAME_ROUND_STORAGE_NAME, JSON.stringify(this.gameRound));
+    }
+
+    private clearCurrentRoundToLocalStorage() {
+        localStorage.removeItem(CURRENT_GAME_ROUND_STORAGE_NAME);
     }
 
     private saveResultsToLocalStorage() {
-        localStorage.setItem('pokemonRounds', JSON.stringify(this.results));
+        localStorage.setItem(RESULTS_LOCAL_STORAGE_NAME, JSON.stringify(this.results));
+      
     }
 
     private initialiseFromLocalStorage(): boolean {
-        const storedResults = localStorage.getItem('pokemonRounds');
+        const storedResults = localStorage.getItem(RESULTS_LOCAL_STORAGE_NAME);
         if (storedResults) {
             const loadedGameRounds: Result[] = JSON.parse(storedResults) as Result[];
             let newScore = 0;
@@ -197,6 +213,11 @@ export class GameService {
                 this.score = newScore;
                 this.currentRound = newCurentRound + 1;
                 this.results = [...loadedGameRounds]
+                const currentRoundStored = localStorage.getItem(CURRENT_GAME_ROUND_STORAGE_NAME);
+                if (currentRoundStored) {
+                    const currentRound = JSON.parse(currentRoundStored) as GameRound;
+                    this.gameRound = currentRound;
+                }
                 return true;
             }
         }

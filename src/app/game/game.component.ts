@@ -23,10 +23,14 @@ export class GameComponent implements OnInit{
   private gameService = inject(GameService);
 
   ngOnInit() {
-    this.gameService.fetchGameRound().then(res => {
-      if(!res) this.isError = true
+    if(!this.gameService.getCurrentGameRound()){
+      this.gameService.fetchGameRound().then(res => {
+        if(!res) this.isError = true
+        this.isLoading = false;
+      })
+    } else {
       this.isLoading = false;
-    })
+    }
     this.allResults = [...this.gameService.getAllResults()];
   }
 
