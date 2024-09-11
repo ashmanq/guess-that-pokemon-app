@@ -10,7 +10,9 @@ export type GameResult = {
     result: boolean;
 }
 
+export type ResultCheck = "success" | "fail" | undefined;
+
 export type Result = {
-    gameResult: "success" | "fail" | undefined;
-    pokemonId: number
+    gameResult: ResultCheck;
+    pokemonId: number;
 }

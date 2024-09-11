@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { GameService } from '../../../shared/services/game.service';
-import { Result } from '../game.model';
+import { Result, ResultCheck } from '../game.model';
 
 @Component({
   selector: 'app-game-score',
@@ -24,4 +24,17 @@ export class GameScoreComponent {
   get maxRounds() {
     return this.gameService.getMaxRounds();
   }
+
+  paddedRoundResults = computed(() => {
+    const paddedResults: ResultCheck[] = [];
+    for (let index = 0; index < this.maxRounds; index++) {
+      if(index < this.allResults().length){
+        const result = this.allResults()[index]
+        paddedResults.push(result.gameResult)
+      } else {
+        paddedResults.push(undefined)
+      }
+    }
+    return paddedResults;
+  })
 }
