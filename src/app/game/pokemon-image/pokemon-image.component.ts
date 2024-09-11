@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit, output } from '@angular/core';
-import { GameService } from '../game.service';
+import { GameService } from '../../../shared/services/game.service';
 import { NgOptimizedImage } from '@angular/common';
 import { Subscription } from 'rxjs';
 

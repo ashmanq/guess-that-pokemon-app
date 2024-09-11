@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { GameService } from './game/game.service';
+import { GameService } from '../shared/services/game.service';
 
 // describe('AppComponent', () => {
 //   let gameService: GameService;

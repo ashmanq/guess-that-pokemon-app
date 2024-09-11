@@ -1,9 +1,9 @@
 import { Injectable, signal } from "@angular/core";
-import { GameResult, GameRound, Pokemon, PokemonListItem, Result } from "./game.model";
+import { GameResult, GameRound, Result } from "../../app/game/game.model";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, lastValueFrom } from "rxjs";
 
-const POKEMON_API_URL = `http://localhost:8000`;
+const POKEMON_API_URL = `http://localhost:8000/api`;
 const NO_OF_ROUNDS = 5;
 const NO_OF_OPTIONS = 4;
 const SCORE_PER_ROUND = 1;
@@ -33,9 +33,8 @@ export class GameService {
 
     async fetchGameResult(pokemonId: number, selectedName: string): Promise<null | GameResult> {
         try {
-            const url = `${POKEMON_API_URL}/pokemon/verify?id=${pokemonId}&name=${selectedName}`;
-            const observable = this.http.get<any>(url);
-            const result = await lastValueFrom(observable) as GameResult;
+            const endPointUrl = `/pokemon/verify?id=${pokemonId}&name=${selectedName}`;
+            const result = await this.pokemonApiCall(endPointUrl);
             // console.log("Verify result: ", result)
             return result as GameResult;
         } catch (error) {
@@ -45,22 +44,22 @@ export class GameService {
         }
     }
 
-     async fetchGameRound(): Promise<any> {
+    async fetchGameRound(): Promise<any> {
         try {
-            let url = `${POKEMON_API_URL}/pokemon/random/?noOfPokemon=${this.noOfOptions}`;
-            if(this.results.length){
+            let endPointUrl = `/pokemon/random/?noOfPokemon=${this.noOfOptions}`;
+            if (this.results.length) {
                 const previousPokemonIds = this.results.map(result => result.pokemonId)
                 const resultsStringified = JSON.stringify(previousPokemonIds);
-                url = url + `&previousPokemonIds=${resultsStringified}`
+                endPointUrl = endPointUrl + `&previousPokemonIds=${resultsStringified}`
             }
-            const observable = this.http.get<any>(url);
-            const result = await lastValueFrom(observable);
-            
+
+            const result = await this.pokemonApiCall(endPointUrl);
+
             const imageBase64Data = result?.pokemonImage;
             const options = result?.pokemonOptions;
             const selectedPokemonIndex = result?.selectedPokemonIndex;
             let imageData: string = "";
-            
+
             if (imageBase64Data) imageData = 'data:image/png;base64,' + imageBase64Data;
 
             const newRound: GameRound = {
@@ -71,7 +70,7 @@ export class GameService {
 
             this.gameRound = newRound;
             return newRound;
-    
+
         } catch (error) {
             console.error("Error getting game round!");
             console.error(error);
@@ -132,19 +131,19 @@ export class GameService {
             // Store previous value
             const prevGameRoundResult = this.results[this.currentRound]?.gameResult;
             const response = await this.fetchGameResult(currentPokemonIndex, selection)
-            if(!response) return null;
+            if (!response) return null;
 
             const responseResult = response.result ? "success" : "fail";
 
-            if(responseResult == "success") this.score = this.score + this.scorePerRound;
+            if (responseResult == "success") this.score = this.score + this.scorePerRound;
 
             this.results[this.currentRound] = {
                 gameResult: responseResult,
                 pokemonId: currentPokemonIndex
             }
 
-            if(this.gameRound) this.gameRound.pokemonImage = response.pokemonImage
-            
+            if (this.gameRound) this.gameRound.pokemonImage = response.pokemonImage
+
             let currentResult = this.results[this.currentRound].gameResult;
 
             if (prevGameRoundResult !== currentResult) {
@@ -190,17 +189,64 @@ export class GameService {
                 const round = loadedGameRounds[index];
                 if (round?.gameResult !== undefined) {
                     newCurentRound = index;
-                    if(round?.gameResult === "success") newScore = newScore + (this.scorePerRound);
+                    if (round?.gameResult === "success") newScore = newScore + (this.scorePerRound);
                 }
             }
             // Ensure we haven't completed the game and the number of rounds matches the current setting
-            if(newCurentRound !== undefined && (newCurentRound + 1) < this.noOfRounds && loadedGameRounds.length <= this.noOfRounds){
+            if (newCurentRound !== undefined && (newCurentRound + 1) < this.noOfRounds && loadedGameRounds.length <= this.noOfRounds) {
                 this.score = newScore;
                 this.currentRound = newCurentRound + 1;
-                this.results  =[...loadedGameRounds]
+                this.results = [...loadedGameRounds]
                 return true;
             }
         }
         return false;
+    }
+
+
+    private pokemonApiCall(endPointUrl: string): Promise<any> {
+        function onRetry() {
+            console.warn("Retrying API call for endpoint: ", endPointUrl)
+        }
+        const call = () => this.apiCall(endPointUrl)
+        return this.functionCallWithRetry(call, onRetry)
+    }
+
+    // Assume only get calls for API at this point
+    private async apiCall(urlEndPoint: string): Promise<any> {
+        const fullApiUrl = `${POKEMON_API_URL}${urlEndPoint}`;
+        const observable = this.http.get<any>(fullApiUrl);
+        const result = await lastValueFrom(observable);
+        return result;
+    }
+
+    private functionCallWithRetry(promise: () => Promise<any>, onRetry: () => void, maxRetries: number = 3): Promise<any> {
+
+        const retryWithBackoff = async (retries: number) => {
+            try {
+                if (retries > 0) {
+                    const timeToWait = 2 ** retries * 100;
+                    console.log(`waiting for ${timeToWait}ms...`);
+                    await this.waitFor(timeToWait);
+                }
+                return await promise();
+            } catch (error) {
+                if (retries < maxRetries) {
+                    onRetry();
+                    return retryWithBackoff(retries + 1);
+                } else {
+                    console.warn("Maximum retries reached!")
+                    throw error;
+                }
+
+            }
+        }
+
+        return retryWithBackoff(0);
+    }
+
+    // Time delay function
+    private waitFor(timeInMillis: number): Promise<void> {
+        return new Promise((resolve) => setTimeout(resolve, timeInMillis));
     }
 }

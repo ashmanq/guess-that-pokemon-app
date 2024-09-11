@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, output } from '@angular/core';
-import { GameService } from './game.service';
+import { GameService } from '../../shared/services/game.service';
 import { GameScoreComponent } from "./game-score/game-score.component";
 import { PokemonImageComponent } from "./pokemon-image/pokemon-image.component";
 import { SelectionButtonsComponent } from "./selection-buttons/selection-buttons.component";
@@ -34,8 +34,9 @@ export class GameComponent implements OnInit{
     return this.gameService.getCurrentRoundResult();
   }
 
-  handleOptionSelected(selection: string) {
-    this.gameService.checkResult(selection);
+  async handleOptionSelected(selection: string) {
+    const result = await this.gameService.checkResult(selection);
+    if(!result) this.isError = true;
   }
 
   toggleShowNextRound(result: boolean) {

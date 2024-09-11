@@ -1,5 +1,5 @@
 import { Component, inject, output } from '@angular/core';
-import { GameService } from '../game.service';
+import { GameService } from '../../../shared/services/game.service';
 
 @Component({
   selector: 'app-selection-buttons',

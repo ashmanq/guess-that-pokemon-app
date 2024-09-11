@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PokemonImageComponent } from './pokemon-image.component';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { GameService } from '../game.service';
+import { GameService } from '../../../shared/services/game.service';
 
 describe('PokemonImageComponent', () => {
   let component: PokemonImageComponent;

@@ -1,5 +1,5 @@
 import { provideHttpClient } from "@angular/common/http";
-import { GameService } from "./game.service"
+import { GameService } from "../../shared/services/game.service"
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from "@angular/core/testing";
 

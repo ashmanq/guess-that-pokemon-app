@@ -1,5 +1,5 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { GameService } from '../game.service';
+import { GameService } from '../../../shared/services/game.service';
 import { Result } from '../game.model';
 
 @Component({

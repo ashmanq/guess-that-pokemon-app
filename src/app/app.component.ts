@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./header/header.component";
 import { IntroComponent } from "./intro/intro.component";
 import { GameComponent } from "./game/game.component";
-import { GameService } from './game/game.service';
+import { GameService } from '../shared/services/game.service';
 
 @Component({
   selector: 'app-root',
