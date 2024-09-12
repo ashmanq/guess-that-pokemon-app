@@ -1,6 +1,6 @@
 {
   "name": "guess-that-pokemon-app",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "scripts": {
     "ng": "ng",
     "ng-new": "ng new",
