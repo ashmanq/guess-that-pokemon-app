@@ -16,3 +16,9 @@ export type Result = {
     gameResult: ResultCheck;
     pokemonId: number;
 }
+
+export type GetGameRoundAPIResult = {
+    pokemonOptions: string[];
+    selectedPokemonIndex: number;
+    pokemonImage: string;
+}

@@ -1,5 +1,5 @@
 import { Injectable, signal } from "@angular/core";
-import { GameResult, GameRound, Result } from "../../app/game/game.model";
+import { GameResult, GameRound, GetGameRoundAPIResult, Result } from "../../app/game/game.model";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, lastValueFrom } from "rxjs";
 
@@ -37,7 +37,7 @@ export class GameService {
     async fetchGameResult(pokemonId: number, selectedName: string): Promise<null | GameResult> {
         try {
             const endPointUrl = `/pokemon/verify?id=${pokemonId}&name=${selectedName}`;
-            const result = await this.pokemonApiCall(endPointUrl);
+            const result = await this.pokemonApiCall<GameResult>(endPointUrl);
             // console.log("Verify result: ", result)
             return result as GameResult;
         } catch (error) {
@@ -47,7 +47,7 @@ export class GameService {
         }
     }
 
-    async fetchGameRound(): Promise<any> {
+    async fetchGameRound(): Promise<GameRound | null> {
         try {
             let endPointUrl = `/pokemon/random/?noOfPokemon=${this.noOfOptions}`;
             if (this.results.length) {
@@ -56,7 +56,7 @@ export class GameService {
                 endPointUrl = endPointUrl + `&previousPokemonIds=${resultsStringified}`
             }
 
-            const result = await this.pokemonApiCall(endPointUrl);
+            const result = await this.pokemonApiCall<GetGameRoundAPIResult>(endPointUrl);
 
             const imageBase64Data = result?.pokemonImage;
             const options = result?.pokemonOptions;
@@ -78,7 +78,7 @@ export class GameService {
         } catch (error) {
             console.error("Error getting game round!");
             console.error(error);
-            return false;
+            return null;
         }
 
     }
@@ -225,7 +225,7 @@ export class GameService {
     }
 
 
-    private pokemonApiCall(endPointUrl: string): Promise<any> {
+    private pokemonApiCall<T>(endPointUrl: string) : Promise<T> {
         function onRetry() {
             console.warn("Retrying API call for endpoint: ", endPointUrl)
         }
