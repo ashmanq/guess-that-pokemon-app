@@ -31,23 +31,23 @@ export class GameComponent implements OnInit{
 
   constructor(){
     this.roundStartAudio = new Audio();
-    this.roundStartAudio.src = '/audio/whos-that-pokemon.mp3';
+    this.roundStartAudio.src = 'audio/whos-that-pokemon.mp3';
     this.roundStartAudio.volume = 0.5;
     this.roundStartAudio.load();
 
 
     this.correctAnswerAudio = new Audio();
-    this.correctAnswerAudio.src = '/audio/correct-answer-sound.mp3';
+    this.correctAnswerAudio.src = 'audio/correct-answer-sound.mp3';
     this.correctAnswerAudio.volume = 0.1;
     this.correctAnswerAudio.load();
 
     this.wrongAnswerAudio = new Audio();
-    this.wrongAnswerAudio.src = '/audio/wrong-answer-sound.mp3';
+    this.wrongAnswerAudio.src = 'audio/wrong-answer-sound.mp3';
     this.wrongAnswerAudio.volume = 0.1;
     this.wrongAnswerAudio.load();
 
     this.gameFinishAudio = new Audio();
-    this.gameFinishAudio.src = '/audio/game-finish-sound.mp3';
+    this.gameFinishAudio.src = 'audio/game-finish-sound.mp3';
     this.gameFinishAudio.volume = 0.1;
     this.gameFinishAudio.load();
   }

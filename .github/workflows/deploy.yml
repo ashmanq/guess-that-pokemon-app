@@ -48,6 +48,7 @@ jobs:
           echo "export const environment = {" > src/environments/environment.prod.ts
           echo "  apiUrl: ${{ secrets.API_URL }} " >> src/environments/environment.prod.ts
           echo "};" >> src/environments/environment.prod.ts
+          cd environments
           ls -al
 
       - name: Build App
