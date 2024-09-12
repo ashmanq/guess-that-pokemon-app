@@ -2,8 +2,9 @@ import { Injectable, signal } from "@angular/core";
 import { GameResult, GameRound, GetGameRoundAPIResult, Result } from "../../app/game/game.model";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, lastValueFrom } from "rxjs";
+import { environment } from "../../environments/environment";
 
-const POKEMON_API_URL = `http://localhost:8000/api`;
+const POKEMON_API_URL = environment.apiUrl;
 const NO_OF_ROUNDS = 5;
 const NO_OF_OPTIONS = 4;
 const SCORE_PER_ROUND = 1;

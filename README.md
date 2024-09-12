@@ -8,6 +8,10 @@ To install dependencies for this app run the following code:
 `npm install`
 
 ## Run the app
+
+### Initial Setup
+A `environment.ts` file needs to be created in the `src/environments` folder using the `environment-example.ts` as a template.
+
 Make sure back end API is running first before starting the app. Instructions on how to run the back end (once downloaded) are available [here](https://github.com/ashmanq/pokemon-api).
 To run the app cd into the app directory in terminal and run the following command:
 
