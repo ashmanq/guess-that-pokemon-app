@@ -8,8 +8,8 @@ To install dependencies for this app run the following code:
 `npm install`
 
 ## Run the app
-
-To run the app cd into the app directory in therminal and run the following command:
+Make sure back end API is running first before starting the app. Instructions on how to run the back end (once downloaded) are available [here](https://github.com/ashmanq/pokemon-api).
+To run the app cd into the app directory in terminal and run the following command:
 
 `npm run start`
 
