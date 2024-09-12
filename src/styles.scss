@@ -54,6 +54,10 @@ button {
     font-size: 1rem;
     width: 100%;
 
+    &.next-round-button {
+       margin: 0; 
+    }
+
     &:hover {
         filter: brightness(70%);
     }
