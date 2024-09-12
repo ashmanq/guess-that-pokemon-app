@@ -11,14 +11,14 @@
 $border-size: 3px;
 
 body, html {
-    height: 100%;
     margin: 0;
-    background: linear-gradient($main-background-colour, $secondary-background-colour);
 }
 
 body {
+    min-height: 100vh;
     font-family: "Poppins", sans-serif;
     color: white;
+    background: linear-gradient($main-background-colour, $secondary-background-colour);
 }
 
 h1 {
