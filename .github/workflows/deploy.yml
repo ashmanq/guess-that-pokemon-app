@@ -54,9 +54,9 @@ jobs:
     
       - name: Create environment.ts File
         run: |
-          touch environments/environment.ts
-          echo "export const environment = {" > src/environments/environment.ts
-          echo "  apiUrl: ${{ secrets.API_URL }} " >> src/environments/environment.ts
+          touch environments/environment.prod.ts
+          echo "export const environment = {" > src/environments/environment.prod.ts
+          echo "  apiUrl: ${{ secrets.API_URL }} " >> src/environments/environment.prod.ts
           echo "};" >> src/environments/environment.ts
           ls -al
       
