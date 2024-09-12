@@ -44,11 +44,11 @@ jobs:
     
       - name: Create environment File
         run: |
-          rm src/enviroments/environment.ts
-          touch src/environments/environments
-          echo "export const environment = {" > src/environments/environments.ts
-          echo "  apiUrl: ${{ secrets.API_URL }} " >> src/environments/environments.ts
-          echo "};" >> src/environments/environments.ts
+          rm src/environments/environment.ts
+          touch src/environments/environment.ts
+          echo "export const environment = {" > src/environments/environment.ts
+          echo "  apiUrl: ${{ secrets.API_URL }} " >> src/environments/environment.ts
+          echo "};" >> src/environments/environment.ts
           cd src/environments
           ls -al
 
