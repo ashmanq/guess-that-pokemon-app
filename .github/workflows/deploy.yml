@@ -47,7 +47,7 @@ jobs:
           rm src/environments/environment.ts
           touch src/environments/environment.ts
           echo "export const environment = {" > src/environments/environment.ts
-          echo "  apiUrl: ${{ secrets.API_URL }} " >> src/environments/environment.ts
+          echo "  apiUrl: '${{ secrets.API_URL }}' " >> src/environments/environment.ts
           echo "};" >> src/environments/environment.ts
           cd src/environments
           ls -al
