@@ -42,12 +42,12 @@ jobs:
           sudo chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SERVER_HOST_ADDRESS }} >> ~/.ssh/known_hosts
     
-      - name: Create environment.ts File
+      - name: Create environment File
         run: |
           touch src/environments/environment.prod.ts
           echo "export const environment = {" > src/environments/environment.prod.ts
           echo "  apiUrl: ${{ secrets.API_URL }} " >> src/environments/environment.prod.ts
-          echo "};" >> src/environments/environment.ts
+          echo "};" >> src/environments/environment.prod.ts
           ls -al
 
       - name: Build App
