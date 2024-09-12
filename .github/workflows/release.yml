@@ -1,0 +1,50 @@
+name: Create App Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      main_branch:
+        required: true
+        type: string
+        default: 'main'
+      node_version:
+        required: false
+        type: string
+        default: '20'
+      release_version:
+        description: 'Set version to release'
+        required: true
+        type: string
+
+
+jobs:
+  release:
+    name: Create A Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+      - name: Set up Git
+        run: |
+          git config user.name "Ashmanq"
+          git config user.email "ashirq@outlook.com"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node_version }}
+
+      - name: Update Version
+        run: npm version '${{ inputs.release_version }}'
+        
+      - name: Merge develop into main branch
+        run: |
+          git checkout ${{ inputs.main_branch }}
+          git merge develop --no-ff -m "Merge develop"
+  
+      - name: Push changes
+        run: git push --all --follow-tags
