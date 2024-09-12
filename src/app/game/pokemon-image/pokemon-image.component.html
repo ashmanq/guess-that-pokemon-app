@@ -1,24 +1,24 @@
 <section>
     <div class="image-area-container">
         <div class="pokemon-image-section">
-            <img class="pokemon-background" src="/images/pokeBackground.svg"/>
+            <img class="pokemon-background" src="images/pokeBackground.svg"/>
             <img class="pokemon-image" [class.hide]="!result" [class.show]="result"
             [style.--animation-duration]="animationDuration" [src]="pokemonImage" />
-            <img class="poke-ball" src="/images/pokeball.svg" />
+            <img class="poke-ball" src="images/pokeball.svg" />
         </div>
         <div class="pokemon-name-section">
             @if(pName) {
             <h2 class="pokemon-name" [class.spin]="isNameSet" [style.--animation-duration]="animationDuration" >{{ pName }}</h2>
             <div class="result-svg-section" [style.--animation-duration]="animationDuration">
                 @if(result === "success" && pName) {
-                <img class="result-svg" src="/images/tick.svg" />
+                <img class="result-svg" src="images/tick.svg" />
                 } @else if (result === "fail") {
-                <img class="result-svg" src="/images/cross.svg" />
+                <img class="result-svg" src="images/cross.svg" />
                 }
             </div>
             } @else {
             <div>
-                <img class="pokemon-question-mark" [style.--animation-duration]="animationDuration" src="/images/question.svg">
+                <img class="pokemon-question-mark" [style.--animation-duration]="animationDuration" src="images/question.svg">
             </div>
             }
         </div>

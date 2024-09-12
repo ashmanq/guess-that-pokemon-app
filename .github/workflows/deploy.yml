@@ -52,13 +52,15 @@ jobs:
           sudo chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SERVER_HOST_ADDRESS }} >> ~/.ssh/known_hosts
     
-    #   - name: Create .env File
-    #     run: |
-    #       touch .env
-    #       echo NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.A_SECRET }}
-    #       ls -al
+      - name: Create environment.ts File
+        run: |
+          touch environments/environment.ts
+          echo "export const environment = {" > src/environments/environment.ts
+          echo "  apiUrl: ${{ secrets.API_URL }} " >> src/environments/environment.ts
+          echo "};" >> src/environments/environment.ts
+          ls -al
       
       - name: Copy Files to Host Server
         run: |
           cd ./dist/guess-that-pokemon-app/browser
-          rsync -aP . ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST_ADDRESS }}:${{ secrets.SERVER_FOLDER }}/pokemon-app
+          rsync -aP . ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST_ADDRESS }}:${{ secrets.SERVER_FOLDER }}/guess-that-pokemon
