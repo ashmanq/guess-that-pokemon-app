@@ -34,16 +34,6 @@ jobs:
 
       - name: Install rsync
         run: sudo apt install -y rsync
-
-      - name: Build App
-        env:
-          NODE_ENV: production
-        run: |
-          npm run build-prod
-
-      - name: Remove Node Modules
-        run: |
-          rm -rf node_modules
       
       - name: Create SSH Key
         run: |
@@ -59,6 +49,16 @@ jobs:
           echo "  apiUrl: ${{ secrets.API_URL }} " >> src/environments/environment.prod.ts
           echo "};" >> src/environments/environment.ts
           ls -al
+
+      - name: Build App
+        env:
+          NODE_ENV: production
+        run: |
+            npm run build-prod
+  
+      - name: Remove Node Modules
+        run: |
+          rm -rf node_modules
       
       - name: Copy Files to Host Server
         run: |
