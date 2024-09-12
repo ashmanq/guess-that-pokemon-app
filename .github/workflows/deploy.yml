@@ -1,0 +1,64 @@
+name: Deploy Website
+
+on:
+  workflow_dispatch:
+    inputs:
+      node_version:
+        type: 'string'
+        required: true
+        default: '20'
+      release_version:
+        description: 'Select version to release'
+        type: 'string'
+        required: true
+
+jobs:
+  deploy:
+    name: Deploy To Hosted Website
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: 'refs/tags/v${{ inputs.release_version }}'
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node_version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install rsync
+        run: sudo apt install -y rsync
+
+      - name: Build App
+        env:
+          NODE_ENV: production
+        run: |
+          npm run build-prod
+
+      - name: Remove Node Modules
+        run: |
+          rm -rf node_modules
+      
+      - name: Create SSH Key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
+          sudo chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_HOST_ADDRESS }} >> ~/.ssh/known_hosts
+    
+    #   - name: Create .env File
+    #     run: |
+    #       touch .env
+    #       echo NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.A_SECRET }}
+    #       ls -al
+      
+      - name: Copy Files to Host Server
+        run: |
+          cd ./dist/guess-that-pokemon-app/browser
+          rsync -aP . ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST_ADDRESS }}:${{ secrets.SERVER_FOLDER }}/pokemon-app
