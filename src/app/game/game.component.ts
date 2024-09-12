@@ -96,7 +96,7 @@ export class GameComponent implements OnInit{
     if(this.gameService.isFinalRound()) {
       return "View Score";
     }
-    return `Round ${this.gameService.getCurrentRound() + 1}`;
+    return `Go To Round ${this.gameService.getCurrentRound() + 1}`;
   }
 
   get finalScoreText() {
